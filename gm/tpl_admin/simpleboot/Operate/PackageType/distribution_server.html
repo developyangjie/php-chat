@@ -1,0 +1,18 @@
+
+<form id="from_forcedEject">
+	<div class="form-group" style="width: 300px; float: left;">
+		<label>{$Think.lang.CHOICE_SERVER}</label>
+		<select class="form-control" id='sid' name="sid[]" id="operatorSelectBox" multiple ="multiple" style="height:200px;width:400px;">
+
+			<?php foreach($server as $sid => $server):?>
+			<option value="<?php echo $sid; ?>"><?php echo $sid . '--' . $server; ?></option>
+			<?php endforeach;?>
+		</select>
+
+	</div>
+	<input type="hidden" name="ids" id="ids" value="<?php echo $_REQUEST['id']?>">
+	<div style="clear: both"></div>
+
+</form>
+
+

@@ -1,0 +1,101 @@
+<admintpl file="header"/>
+<style type="text/css">
+.col-auto { overflow: auto; _zoom: 1;_float: left;}
+.col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+.table th, .table td {vertical-align: middle;}
+.picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+     <li class="active"><a href="#"  target="_self">添加数据道具</a></li>
+  </ul>
+  <form name="myform" id="myform" action="" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+
+  <div class="col-auto">
+    <div class="table_full">
+      <table class="table table-bordered">
+		  <tr>
+			  <th width="80">区服名称</th>
+			  <td>{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}</td>
+		  <tr>
+		  <tr>
+			  <th width="80">UID(多个以逗号隔开)</th>
+			  <td> <textarea name="uid" required class="form-control" style="min-height:120px;width:400px;"></textarea></td>
+		  </tr>
+		  <tr>
+			  <th width="80">道具名称</th>
+			  <td>
+				  <select id = "itemtype">
+					  <option value = "0">货币</option>
+					  <option value = "1">时间回复道具</option>
+					  <option value = "2">特殊副本入场券</option>
+					  <option value = "3">改造材料</option>
+					  <option value = "4">宝箱类道具</option>
+					  <option value = "5">特殊道具</option>
+					  <option value = "6">经验道具</option>
+					  <option value = "7">合成材料</option>
+					  <option value = "9">先知材料</option>
+					  <option value = "10">材料碎片</option>
+					  <option value = "11">升阶转职材料</option>
+					  <option value = "12">勇者碎片</option>
+					  <option value = "14">装备碎片</option>
+					  <option value = "15">装备</option>
+					  <option value = "16">勇者</option>
+					  <option value = "17">怪物卡片</option>
+				  </select>
+				  <select class="form-control" id="itemlist"></select>
+				  数量:<input type="number" id="number" value="1" style="display:inline-block; width: 30px" class="form-control reward_num" >
+				  <button type="button" id="addBtn" class="btn btn-success btn-sm">增加奖品</button><span style="color:red">(最多可以发送两组道具)</span>
+				  <div id="addItem"></div>
+			  </td>
+		  </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+	<div class="form-actions">
+		<button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">提交</button>
+		<a class="btn" href="javascript:history.go(-1)">返回</a>
+	</div>
+ </form>
+</div>
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript" src="__ROOT__/statics/js/content_addtop.js"></script>
+<script>
+	function getItemList(){
+		$.get("{:U('Operate/Email/get_item_json')}&itemType=" + $("#itemtype").val(),function(data){
+			var str = '';
+			if(data.Options){
+				for(var i = 0; i < data.Options.length; i++){
+					str += '<option value="'+data.Options[i].Value+'">' + data.Options[i].DisplayText + '</option>';
+				}
+				$('#itemlist').html(str);
+			}
+		});
+	}
+
+	$(function () {
+		getItemList();
+		$("#itemtype").change(function () {
+			$('#itemlist').html('');
+			getItemList();
+		});
+
+		$('#addBtn').click(function () {
+			var $btn = $('<button type="button" class="btn btn-danger btn-sm">删除</button>').click(function () {
+				$(this).parent().remove();
+			});
+			$('#addItem').append($('<div>')
+					.append('名称：' + $("#itemlist").find("option:selected").text() + '，数量：' + $('#number').val())
+					.append($btn)
+					.append('<input type="hidden" name="itemid[]" value="' + $('#itemlist').val() + '">')
+					.append('<input type="hidden" name="type[]" value="' + $("#itemtype").val() + '">')
+					.append('<input type="hidden" name="count[]" value="' + $('#number').val() + '">'));
+		});
+	});
+</script>
+
+</body>
+</html>

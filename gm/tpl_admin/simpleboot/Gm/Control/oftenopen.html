@@ -1,0 +1,58 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:U('Control/index')}">{$Think.lang.CARD_DARK_CONTROL}</a></li>
+        <li><a href="{:U('Control/specialsummon')}" target="_self">{$Think.lang.SPECIAL_SUMMON}</a></li>
+        <li class="active"><a href="{:U('Control/oftenopen')}" target="_self">{$Think.lang.NORMALLY_OPEN}</a></li>
+        <li><a href="{:U('Control/cardwarehouse')}" target="_self">{$Think.lang.CARD_WAREHOUSE}</a></li>
+    </ul>
+    <form class="well form-search" method="post" action="">
+        <div class="search_type cc mb10">
+            <div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),$serverid,'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+            </div>
+        </div>
+    </form>
+    <form class="J_ajaxForm" action="" method="post">
+
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+                <th width="100">{$Think.lang.A_FEW_TIMES_BEFORE_OUT_S}</th>
+                <th width="100">{$Think.lang.ONE_CARD_WAREHOUSE}</th>
+                <th width="100">{$Think.lang.TEN_HOW_MANY_TIMES_BEFORE_OUT_S}</th>
+                <th width="100">{$Think.lang.TEN_CARD_WAREHOUSE}</th>
+                <th width="100">{$Think.lang.OPERATION}</th>
+            </tr>
+            </thead>
+
+            <foreach name="posts"  item="vo">
+                <tr>
+                    <td>{$vo.onedrawcount}</td>
+                    <td>{$vo.onegroupid}</td>
+                    <td>{$vo.tendrawcount}</td>
+                    <td>{$vo.tengroupid}</td>
+                    <td><a href="{:U('Control/syspt_edit',array('onedrawcount'=>$vo['onedrawcount'],'serverid'=>$serverid))}">{$Think.lang.EDIT_OPERATION}</a></td>
+                </tr>
+            </foreach>
+            <tfoot>
+            <tr>
+                <th width="100">{$Think.lang.A_FEW_TIMES_BEFORE_OUT_S}</th>
+                <th width="100">{$Think.lang.ONE_CARD_WAREHOUSE}</th>
+                <th width="100">{$Think.lang.TEN_HOW_MANY_TIMES_BEFORE_OUT_S}</th>
+                <th width="100">{$Think.lang.TEN_CARD_WAREHOUSE}</th>
+                <th width="100">{$Think.lang.OPERATION}</th>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="pagination">{$Page}</div>
+
+    </form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

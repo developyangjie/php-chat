@@ -1,0 +1,97 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+	<div class="wrap jj">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('menu/index')}">{$Think.lang.BACKGROUND_MENU}</a></li>
+			<li class="active"><a href="{:U('menu/add')}">{$Think.lang.ADD_MENU}</a></li>
+		</ul>
+		<div class="common-form">
+			<form method="post" class="form-horizontal J_ajaxForm" action="{:U('Menu/add_post')}">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.SUPERIOR}:</label>
+						<div class="controls">
+							<select name="parentid" class="normal_select">
+								<option value="0">{$Think.lang.AS_A_MENU}</option>
+								{$select_categorys}
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.NAME}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="name" value="">
+							<span class="must_red">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.APPLICATION}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="app" id="app" value="">
+							<span class="must_red">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.MODULAR}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="model" id="model" value="">
+							<span class="must_red">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.METHOD}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="action" id="action" value="">
+							<span class="must_red">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.PARAMETER}:</label>
+						<div class="controls">
+							<input type="text" class="input length_5" name="data" value="">
+							例:id=3&amp;p=3
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.ICON}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="icon" id="action" value="">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.REMARKS}:</label>
+						<div class="controls">
+							<textarea name="remark" rows="5" cols="57"></textarea>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.ROLE_STATE}:</label>
+						<div class="controls">
+							<select name="status" class="normal_select">
+								<option value="1">{$Think.lang.DISPLAY}</option>
+								<option value="0">{$Think.lang.HIDE}</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.TYPE}:</label>
+						<div class="controls">
+							<select name="type" class="normal_select">
+								<option value="1" selected>{$Think.lang.AUTHORITY_AUTHENTICATION_TYPE}</option>
+								<option value="0">{$Think.lang.JUST_ONLY_MENU}</option>
+							</select>
+							{$Think.lang.PAY_ATTENTION}
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary btn_submit  J_ajax_submit_btn">{$Think.lang.ADD}</button>
+					<a class="btn" onclick="history.go(-1)">{$Think.lang.RETURN}</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

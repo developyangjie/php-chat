@@ -1,0 +1,277 @@
+<admintpl file="header"/>
+<style type="text/css">
+.col-auto { overflow: auto; _zoom: 1;_float: left;}
+.col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+.table th, .table td {vertical-align: middle;}
+.picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+     <!--<li><a href="{:U('Pmd/index')}">跑马灯列表</a></li>-->
+     <li class="active"><a href="{:U('Pmd/add')}"  target="_self">{$Think.lang.ADD_MARQUEE}</a></li>
+  </ul>
+  <form name="myform" id="myform" action="{:U('Pmd/add')}" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+  <div class="col-auto">
+    <div class="table_full">
+      <table class="table table-bordered">
+			<tr>
+				<th width="100">{$Think.lang.CHOICE_SERVER}</th>
+				<td>
+					{:form_checkbox(gm_server(),$posts['sid'],'name="server_id[]" id="server_id"',0,'100')}
+					&nbsp;
+					<h4><input type="checkbox" id="checkedAll">{$Think.lang.ALL_SELECT}/{$Think.lang.ALL_NOT_SELECT}</h4>
+				</td>
+			</tr>
+		  <script>
+			  //--全选--
+			  $('#checkedAll').click(function(){
+				  if(this.checked){
+					  $("[name='server_id[]']:checkbox").prop('checked',true);
+				  }else{
+					  $("[name='server_id[]']:checkbox").prop('checked',false);
+				  }
+
+			  });
+		  </script>
+		<!--  	<tr>
+				<th width="80">开始时间</th>
+				<td> <input type="text" class="J_datetime" style="width:150px" name="start_time" id="title"  value="<?php echo $posts['start_time']?date('Y-m-d H:i:s',$posts['start_time']):date('Y-m-d 00:00:00',time());?>" placeholder="不填写默认为当前时间" /></td>
+			</tr>
+			<tr>
+				<th width="80">结束时间</th>
+				<td> <input type="text" class="J_datetime" style="width:150px" name="end_time"   value="<?php echo $posts['end_time']?date('Y-m-d H:i:s',$posts['end_time']):date('Y-m-d 23:59:59',strtotime('+6 days'));?>" placeholder="不填写默认为当前时间" /></td>
+			</tr>
+		    <tr>
+				<th width="80">间隔时间</th>
+                <td> <input type="text" class="" style="width:150px" name="interval_time"  value="<?php echo $posts['interval_time']?$posts['interval_time']:5;?>" placeholder="间隔时间" /></td>
+			</tr>
+			<tr>-->
+			<tr>
+				<th width="80">{$Think.lang.MARQUEE_CONTENT}</th>
+				<td> <input type="text" class="" style="width:250px" name="pmd_text"  value="<?php echo $posts['pmdtext'];?>"  placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.CONTENT}" /></td>
+			</tr>	
+				<!--  <td>
+					<?php
+					  $posts['msg'] = json_decode($posts['msg'],true);
+
+					if(!empty($posts['msg'])):?>
+						<?php foreach ($posts['msg'] as $key => $val): ?>
+
+						<div class="form-group">
+							<input type="text" name="old_content[]"  value="<?php echo $val[0];?>" style="display:inline-block; width: 250px" required placeholder="请输入内容" class="form-control reward_num" >&nbsp;
+							<input type="text" name="old_size[]"  value="<?php echo $val[1];?>" placeholder="请输入字体大小" required style="display:inline-block; width: 100px" class="form-control reward_num" >&nbsp;
+
+
+							<select class="form-control form_check" name="old_rgb_value[]" style="display:inline-block; width: 250px">
+								<?php foreach(pmd_rgb_values() as $temp=>$item):?>
+								<?php
+								  if($val[2]==$temp){
+								     $default = 'selected';
+								  }else{
+								     $default = '';
+								  }
+								?>
+								<option value="<?php echo $temp;?>" <?php echo $default;?>><?php echo $item;?></option>
+								<?php endforeach;?>
+							</select>
+							&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="Mail.delGoodsSelectBox(this)">删除</button><br>
+						</div>
+						<?php endforeach; ?>
+					<?php endif;?>
+					<button type="button" class="btn btn-success btn-sm" onclick="Mail.createGoodsSelectBox(this)">增加跑马灯</button></td>
+			</tr>-->
+        </tbody>
+      </table>
+    </div>
+  </div>
+	  <input type="hidden" name="id" value="{$posts.id}">
+  <div class="form-actions">
+        <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">{$Think.lang.SUBMIT}</button>
+        <a class="btn" href="{:U('Pmd/index')}">{$Think.lang.RETURN}</a>
+  </div>
+ </form>
+	<div id="goodsSelectBox"  style="display:none" >
+		<div class="form-group" id="goodsBox">
+			<input type="text" name="content"  style="display:inline-block; width: 250px" required placeholder="请输入内容" class="form-control reward_num" >&nbsp;
+			<input type="text" name="size"  value="20" placeholder="请输入字体大小" required style="display:inline-block; width: 100px" class="form-control reward_num" >&nbsp;
+			<select class="form-control select2" name="rgb_value" style="display:inline-block; width: 250px">
+				<?php foreach (pmd_rgb_values() as $k => $g): ?>
+				<option value="<?php echo $k; ?>"><?php echo $g; ?></option>
+				<?php endforeach; ?>
+			</select>
+
+			&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="Mail.delGoodsSelectBox(this)">删除</button>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+
+<script type="text/javascript" src="__ROOT__/statics/js/content_addtop.js"></script><script type="text/javascript">
+$(function () {
+
+	Mail = {
+		//动态生成物品选择框
+		createGoodsSelectBox: function(obj) {
+			//当前是第几个奖品组,作为标识符
+			var id = $(obj).prev().attr('id');
+			var tempBox = $('#goodsSelectBox').clone();
+			if (typeof (id) == 'undefined') {
+				var index = 1;
+			} else {
+				var idArr = id.split('_');
+				var index = parseInt(idArr[1]) + 1;
+			}
+			tempBox.children('#goodsBox').attr('id', 'goodsBox_' + index);
+			//初始化其中name字段
+			tempBox.find("input[name],select[name]").each(function(i) {
+				this.name = this.name + '[' + index + ']';
+			});
+			$(obj).before(tempBox.html());
+			//$('#goodsBox_' + index).find('select').select2();
+		},
+		//删除对应的物品选择框
+		delGoodsSelectBox: function(obj) {
+			$(obj).parent().remove();
+		},
+		//检索条件
+		autoDisplay: function(name, displayId, player_name) {
+			value = $(':input[name=' + name + ']').val();
+			$('#' + player_name).val('');
+			if (value === '0' || value === '2') {
+				$('#' + displayId).css('display', 'none');
+			} else {
+				if (value === '1') {
+					playerValue = '玩家名称';
+				}
+				if (value === '3') {
+					playerValue = '玩家UID';
+				}
+				$('#' + displayId).css('display', 'inline-block');
+				$('#playerValue').html(playerValue);
+			}
+		}
+
+	};
+
+
+
+
+	//setInterval(function(){public_lock_renewal();}, 10000);
+	$(".J_ajax_close_btn").on('click', function (e) {
+	    e.preventDefault();
+	    Wind.use("artDialog", function () {
+	        art.dialog({
+	            id: "question",
+	            icon: "question",
+	            fixed: true,
+	            lock: true,
+	            background: "#CCCCCC",
+	            opacity: 0,
+	            content: "您确定需要关闭当前页面嘛？",
+	            ok:function(){
+					setCookie("refersh_time",1);
+					window.close();
+					return true;
+				}
+	        });
+	    });
+	});
+	/////---------------------
+	 Wind.use('validate', 'ajaxForm', 'artDialog', function () {
+			//javascript
+	        
+//	            //编辑器
+//	            editorcontent = new baidu.editor.ui.Editor();
+//	            editorcontent.render( 'content' );
+//	            try{editorcontent.sync();}catch(err){};
+//	            //增加编辑器验证规则
+//	            jQuery.validator.addMethod('editorcontent',function(){
+//	                try{editorcontent.sync();}catch(err){};
+//	                return editorcontent.hasContents();
+//	            });
+	            var form = $('form.J_ajaxForms');
+	        //ie处理placeholder提交问题
+	        if ($.browser.msie) {
+	            form.find('[placeholder]').each(function () {
+	                var input = $(this);
+	                if (input.val() == input.attr('placeholder')) {
+	                    input.val('');
+	                }
+	            });
+	        }
+	        //表单验证开始
+	        form.validate({
+				//是否在获取焦点时验证
+				onfocusout:false,
+				//是否在敲击键盘时验证
+				onkeyup:false,
+				//当鼠标掉级时验证
+				onclick: false,
+	            //验证错误
+	            showErrors: function (errorMap, errorArr) {
+					//errorMap {'name':'错误信息'}
+					//errorArr [{'message':'错误信息',element:({})}]
+					try{
+						$(errorArr[0].element).focus();
+						art.dialog({
+							id:'error',
+							icon: 'error',
+							lock: true,
+							fixed: true,
+							background:"#CCCCCC",
+							opacity:0,
+							content: errorArr[0].message,
+							cancelVal: '{$Think.lang.SURE}',
+							cancel: function(){
+								$(errorArr[0].element).focus();
+							}
+						});
+					}catch(err){
+					}
+	            },
+	            //验证规则
+//	            rules: {'post[post_title]':{required:1},'post[post_content]':{editorcontent:true}},
+//	            //验证未通过提示消息
+//	            messages: {'post[post_title]':{required:'请输入标题'},'post[post_content]':{editorcontent:'内容不能为空'}},
+	            //给未通过验证的元素加效果,闪烁等
+	            highlight: false,
+	            //是否在获取焦点时验证
+	            onfocusout: false,
+	            //验证通过，提交表单
+	            submitHandler: function (forms) {
+	                $(forms).ajaxSubmit({
+	                    url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+	                    dataType: 'json',
+	                    beforeSubmit: function (arr, $form, options) {
+	                        
+	                    },
+	                    success: function (data, statusText, xhr, $form) {
+	                        if(data.status){
+								setCookie("refersh_time",1);
+								//添加成功
+								Wind.use("artDialog", function () {
+								    art.dialog({
+								        id: "succeed",
+								        icon: "succeed",
+								        fixed: true,
+								        lock: true,
+								        background: "#CCCCCC",
+								        opacity: 0,
+								        content: data.info
+								    });
+								});
+							}else{
+								isalert(data.info);
+							}
+	                    }
+	                });
+	            }
+	        });
+	    });
+	////-------------------------
+});
+</script>
+</body>
+</html>

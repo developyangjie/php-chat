@@ -1,0 +1,212 @@
+<admintpl file="header"/>
+<style type="text/css">
+    .col-auto { overflow: auto; _zoom: 1;_float: left;}
+    .col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+    .table th, .table td {vertical-align: middle;}
+    .picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:U('ActiveConfiguration/index')}"  target="_self">{$Think.lang.ACTIVE_CONFIGURATION}</a></li>
+        <li><a href="{:U('ActiveConfiguration/add')}" target="_self">{$Think.lang.ADD_ACTIVE_CONFIGURATION}</a></li>
+        <li class="active"><a href="#"  target="_self">{$Think.lang.ACTIVITY_ACCUMULATION_ALLOCATIO_NTIRED}</a></li>
+        <li><a href="{:U('ActiveConfiguration/accumulate_list')}"  target="_self">{$Think.lang.LIST_OF_ACTIVITIES}</a></li>
+        <li><a href="{:U('ActiveConfiguration/tired_list')}"  target="_self">{$Think.lang.TIRED_ACTIVITY_LIST}</a></li>
+        <li><a href="{:U('ActiveConfiguration/weekaccumulate_list')}"  target="_self">{$Think.lang.WEEK_ACTIVE}</a></li>
+        <li><a href="{:U('ActiveConfiguration/timedpacks')}"  target="_self">{$Think.lang.TIMED_PACKS}</a></li>
+        <li><a href="{:U('ActiveConfiguration/timedpacks_list')}"  target="_self">{$Think.lang.TIMED_PACKS_LIST}</a></li>
+    </ul>
+    <form name="myform" id="myform" action="{:U('ActiveConfiguration/accumulate')}" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+
+        <div class="col-auto">
+            <div class="table_full">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="80">{$Think.lang.CHOICE_SERVER}</th>
+                        <td>{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}</td>
+                    </tr>
+                    <?php $actives=array("6"=>L('CUMULATIVE_CHARGE'),"7"=>L('CUMULATIVE_CONSUMPTION'),"35"=>L('WEEK_CHONGZHI_ACTIVITY'));?>
+                    <tr>
+                        <th width="80">{$Think.lang.SELECTION_ACTIVITY}</th>
+                        <td>
+                            <select class="form-control" id="said" name="said">
+                                <?php foreach ($actives as $k => $v): ?>
+                                <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="80">{$Think.lang.AMOUNT_OF_MONEY}</th>
+                        <td><input type="number" style="width:200px;" name="chongzhi" required class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.AMOUNT_OF_MONEY}!"  /></td>
+                    </tr>
+                    <tr>
+                        <th width="80">{$Think.lang.PROPS_SELECTION}</th>
+                        <td>
+                            <select id = "itemtype">
+                                <option value = "0">{$Think.lang.CURRENCY}</option>
+                                <option value = "1">{$Think.lang.TIME_RESTORE_PROPS}</option>
+                                <option value = "2">{$Think.lang.SPECIAL_COPY}</option>
+                                <option value = "3">{$Think.lang.MODIFICATION_MATERIAL}</option>
+                                <option value = "4">{$Think.lang.TREASURE_PROPS}</option>
+                                <option value = "5">{$Think.lang.SPECIAL_ITEM}</option>
+                                <option value = "6">{$Think.lang.EXPERIENCE_PROPS}</option>
+                                <option value = "7">{$Think.lang.SYNTHETIC_MATERIAL}</option>
+                                <option value = "9">{$Think.lang.PROPHET_MATERIAL}</option>
+                                <option value = "10">{$Think.lang.MATERIAL_DEBRIS}</option>
+                                <option value = "11">{$Think.lang.ASCENDING_ORDER_TRANSFER_MATERIAL}</option>
+                                <option value = "12">{$Think.lang.BRAVE_FRAGMENT}</option>
+                                <option value = "14">{$Think.lang.EQUIPMENT_FRAGMENT}</option>
+                                <option value = "15">{$Think.lang.EQUIPMENT}</option>
+                                <option value = "16">{$Think.lang.BRAVE}</option>
+                                <option value = "17">{$Think.lang.MONSTER_CARD}</option>
+                            </select>
+                            <select class="form-control" id="itemlist">
+                                <?php foreach ($item_info as $k => $v): ?>
+                                <option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            {$Think.lang.ITEM_NUMBER}:<input type="number" id="number" value="1" style="display:inline-block; width: 30px" class="form-control reward_num" >
+                            <button type="button" id="addBtn" class="btn btn-success btn-sm">{$Think.lang.INCREASE_THE_PRIZE}</button><span style="color:red">{$Think.lang.REMARKS_ITEM_FOUR}</span>
+                            <div id="addItem"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary btn_submit J_ajax_submit_btn" type="submit">{$Think.lang.SUBMIT}</button>
+            <a class="btn" href="javascript:history.go(-1)">{$Think.lang.RETURN}</a>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+<script>
+    /////---------------------
+    Wind.use('validate', 'ajaxForm', 'artDialog', function () {
+        var form = $('form.J_ajaxForms');
+        //ie处理placeholder提交问题
+        if ($.browser.msie) {
+            form.find('[placeholder]').each(function () {
+                var input = $(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                }
+            });
+        }
+        //表单验证开始
+        form.validate({
+            //是否在获取焦点时验证
+            onfocusout:false,
+            //是否在敲击键盘时验证
+            onkeyup:false,
+            //当鼠标掉级时验证
+            onclick: false,
+            //验证错误
+            showErrors: function (errorMap, errorArr) {
+                //errorMap {'name':'错误信息'}
+                //errorArr [{'message':'错误信息',element:({})}]
+                try{
+                    $(errorArr[0].element).focus();
+                    art.dialog({
+                        id:'error',
+                        icon: 'error',
+                        lock: true,
+                        fixed: true,
+                        background:"#CCCCCC",
+                        opacity:0,
+                        content: errorArr[0].message,
+                        cancelVal: '确定',
+                        cancel: function(){
+                            $(errorArr[0].element).focus();
+                        }
+                    });
+                }catch(err){
+                }
+            },
+            highlight: false,
+            //是否在获取焦点时验证
+            onfocusout: false,
+            //验证通过，提交表单
+            submitHandler: function (forms) {
+                $(forms).ajaxSubmit({
+                    url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+                    dataType: 'json',
+                    beforeSubmit: function (arr, $form, options) {
+
+                    },
+                    success: function (data, statusText, xhr, $form) {
+                        if(data.status){
+                            setCookie("refersh_time",1);
+                            //添加成功
+                            Wind.use("artDialog", function () {
+                                art.dialog({
+                                    id: "succeed",
+                                    icon: "succeed",
+                                    fixed: true,
+                                    lock: true,
+                                    background: "#CCCCCC",
+                                    opacity: 0,
+                                    content: data.info,
+                                    button:[
+                                        {
+                                            name: '{$Think.lang.CONTINUE_TO_ADD}',
+                                            callback:function(){
+                                                reloadPage(window);
+                                                return true;
+                                            },
+                                            focus: true
+                                        }
+                                    ]
+                                });
+                            });
+                        }else{
+                            isalert(data.info);
+                        }
+                    }
+                });
+            }
+        });
+    });
+    function getItemList(){
+        $.get("{:U('Operate/Email/get_item_json')}&itemType=" + $("#itemtype").val(),function(data){
+            var str = '';
+            if(data.Options){
+                for(var i = 0; i < data.Options.length; i++){
+                    str += '<option value="'+data.Options[i].Value+'">(' + data.Options[i].Value + ')' + data.Options[i].DisplayText + '</option>';
+                }
+                $('#itemlist').html(str);
+
+            }
+        });
+    }
+
+    $(function () {
+        getItemList();
+        $("#itemtype").change(function(){
+            $('#itemlist').html('');
+            getItemList();
+        });
+
+        $('#addBtn').click(function(){
+            var $btn = $('<button type="button" class="btn btn-danger btn-sm">{$Think.lang.DELETE_OPERATION}</button>').click(function(){
+                $(this).parent().remove();
+            });
+            $('#addItem').append($('<div>')
+                    .append('{$Think.lang.NAME}：' + $("#itemlist").find("option:selected").text() + '，{$Think.lang.ITEM_NUMBER}：' + $('#number').val())
+                    .append($btn)
+                    .append('<input type="hidden" name="itemid[]" value="'+ $('#itemlist').val() +'">')
+                    .append('<input type="hidden" name="type[]" value="'+ $("#itemtype").val() +'">')
+                    .append('<input type="hidden" name="count[]" value="'+ $('#number').val() +'">'));
+
+
+        });
+    });
+</script>
+</body>
+</html>
+

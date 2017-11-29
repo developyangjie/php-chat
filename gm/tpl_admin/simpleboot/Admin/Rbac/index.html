@@ -1,0 +1,52 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('rbac/index')}">{$Think.lang.ROLE_MANAGEMENT}</a></li>
+			<li><a href="{:U('rbac/roleadd')}">{$Think.lang.ADD_ROLE}</a></li>
+		</ul>
+		<form name="myform" action="{:U('Rbac/listorders')}" method="post">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th width="30">ID</th>
+						<th align="left">{$Think.lang.ROLE_NAME}</th>
+						<th align="left">{$Think.lang.ROLE_DESCRIPTION}</th>
+						<th width="40" align="left">{$Think.lang.ROLE_STATE}</th>
+						<th width="120">{$Think.lang.MANAGEMENT_OPERATION}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="roles" item="vo">
+					<tr>
+						<td>{$vo.id}</td>
+						<td>{$vo.name}</td>
+						<td>{$vo.remark}</td>
+						<td>
+							<if condition="$vo['status'] eq 1">
+								<font color="red">√</font>
+							<else /> 
+								<font color="red">╳</font>
+							</if>
+						</td>
+						<td>
+							<if condition="$vo['id'] eq 1">
+								<font color="#cccccc">{$Think.lang.PERMISSION_SETTINGS}</font> | <!-- <a href="javascript:open_iframe_dialog('{:U('rbac/member',array('id'=>$vo['id']))}','成员管理');">成员管理</a> | -->
+								<font color="#cccccc">{$Think.lang.EDIT_OPERATION}</font> | <font color="#cccccc">{$Think.lang.DELETE_OPERATION}</font>
+							<else />
+								<a href="{:U('Rbac/authorize',array('id'=>$vo['id']))}">{$Think.lang.PERMISSION_SETTINGS}</a>|
+								<!-- <a href="javascript:open_iframe_dialog('{:U('rbac/member',array('id'=>$vo['id']))}','成员管理');">成员管理</a>| -->
+								<a href="{:U('Rbac/roleedit',array('id'=>$vo['id']))}">{$Think.lang.EDIT_OPERATION}</a>|
+								<a class="J_ajax_del" href="{:U('Rbac/roledelete',array('id'=>$vo['id']))}">{$Think.lang.DELETE_OPERATION}</a>
+							</if>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

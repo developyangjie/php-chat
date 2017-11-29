@@ -1,0 +1,90 @@
+
+<form id="from_forcedEject">
+	<div class="col-auto">
+		<div class="table_full">
+			<table class="table table-bordered">
+				<tr>
+					<th width="80">昵称</th>
+					<td>
+						{$posts.uname}
+					</td>
+				</tr>
+				<tr>
+					<th width="80">等级</th>
+					<td>
+					   {$posts.ulv}
+					</td>
+				</tr>
+				<tr>
+					<th width="80">等级经验</th>
+					<td>
+						<input type="number" style="width:200px;" name="uexp" id="uexp" required value="{$posts.uexp}" disabled="disabled"  class="input input_hd J_title_color " placeholder="请输入经验值"/>
+						<a href="javascript;" class="a_click"><span>修改</span></a>
+					</td>
+				</tr>
+				<tr>
+					<th width="80">VIP等级</th>
+					<td>
+						<input type="number" style="width:200px;" name="vip" id="vip" required value="{$posts.vip}" disabled="disabled"  class="input input_hd J_title_color" placeholder="请输入经验值"/>
+						<a href="javascript;" class="a_click"><span>修改</span></a>
+					</td>
+				</tr>
+
+				<tr>
+					<th width="80">铜钱</th>
+					<td>
+						<input type="number" style="width:200px;" name="ucoin" id="ucoin" required value="{$posts.ucoin}" disabled="disabled" class="input input_hd J_title_color" placeholder="请输入经验值"/>
+						<a href="javascript;" class="a_click"><span>修改</span></a>
+					</td>
+				</tr>
+				<tr>
+					<th width="80">元宝</th>
+					<td>
+						<input type="number" style="width:200px;" name="ug" id="ug" required value="{$posts.ug}" disabled="disabled"  class="input input_hd J_title_color" placeholder="请输入经验值"/>
+						<a href="javascript;" class="a_click"><span>修改</span></a>
+					</td>
+				</tr>
+				<tr>
+					<th width="80">道具</th>
+					<td>
+						<table>
+							<foreach name="posts.item" item="vo">
+								<tr>
+									<td style="border:0px;">{$vo.name}</td>
+									<td style="border:0px;">
+										<input type="hidden" name="itemid[]" class="input" value="{$vo.itemid}" disabled="disabled"  id="operatorSelectBox">
+										<input type="number" style="width:100px;" name="count[]" class="input" required value="{$vo.count}" disabled="disabled"   id="operatorSelectBox" class="input input_hd J_title_color" placeholder="请输入经验值"/>
+										<a href="javascript;" class="a_click"><span>修改</span></a>
+									</td>
+								</tr>
+							</foreach>
+						</table>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<input type="hidden" name="uid" id="uid" value="<?php echo $_REQUEST['uid']?>">
+	<input type="hidden" name="server_id" id="server_id" value="<?php echo $_REQUEST['server_id']?>">
+	<div style="clear: both"></div>
+
+</form>
+<script>
+$(document).ready(function(){
+	$("#from_forcedEject .a_click").each(function(i, ele) {
+		var index = i;
+		$(ele).click(function() {
+			if(disabled){
+				$(this).eq(index).html("取消").attr("disabled",false);
+			}else{
+				$(this).eq(index).html("修改").attr("disabled",true);
+			}
+
+		});
+	});
+
+
+
+})
+</script>

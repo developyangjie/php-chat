@@ -1,0 +1,142 @@
+
+<admintpl file="header" />
+<body class="J_scroll_fixed" >
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">跑马灯列表</a></li>
+		<li><a href="{:U('Pmd/add')}"  target="_self"> <?php echo $posts['id']?'修改':'添加';?>跑马灯</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="{:U('Pmd/add')}">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">选择区服：
+						{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"','-选择区服-')}
+				<tr>
+				<th width="80">跑马灯内容</th>
+				<td> <input type="text" class="" style="width:250px" name="pmd_text"  value="<?php echo $posts['pmdtext'];?>" placeholder="请输入内容" /></td>
+				</tr>	
+						<input type="submit" class="btn btn-primary" value="发送"/>
+					</span>
+			</div>
+		</div>
+	</form>
+	<!--  <div style="text-align: center;">
+		<div style="float: left; margin-bottom:10px; margin-top: -5px">
+			<button class="btn btn-primary btn-lg" onclick="Server.editMoreIntTime();">
+				批量编辑间隔时间
+			</button>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<div style="float: left; margin-bottom:10px; margin-top: -5px; margin-left: 20px">
+			<a href="{:U('Pmd/edit_more_end_time')}" class="btn btn-primary btn-lg">
+				批量编辑结束时间
+			</a>
+		</div>
+	</div>
+-->
+<!--  	<form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+
+				<th width="200">服名称</th>
+				<th width="50">内容</th>
+	 			<th width="50">间隔时间</th>
+				<th width="50">开始时间</th>
+				<th width="50">结束时间</th> 
+				<th width="50">操作</th>
+
+			</tr>
+			</thead>
+      
+				<tr>
+					<td style="max-width:200px;">
+						<?php
+				
+								echo gm_server($sid);
+							
+						?>
+					</td>
+					<td><?php echo  $posts['content'];?></td>
+					 <!-- <td>{$vo.interval_time} 分钟</td>
+					<td>{$vo.start_time|date="Y-m-d H:i:s",###}</td>
+					<td>
+						<?php if(time()<$vo['end_time']):?>
+						{$vo.end_time|date="Y-m-d H:i:s",###}
+						<?php else:?>
+						<span class="btn btn-danger">已过期</span>
+						<?php endif;?>
+						</td> 
+					<td><a href="{:U('Pmd/edit',array('id'=>$vo['id']))}">修改</a> | <a href="{:U('Pmd/delete',array('id'=>$vo['id']))}" class="J_ajax_del">删除</a></td>
+				</tr>
+			
+			<tfoot>
+			<tr>
+				<th width="200">服名称</th>
+				<th width="50">内容</th>
+			 	<th width="50">间隔时间</th>
+				<th width="50">开始时间</th>
+				<th width="50">结束时间</th>
+				<th width="50">操作</th>
+			</tr>
+			</tfoot>
+		</table>
+
+		<div class="pagination">{$Page}</div>
+
+	</form>-->
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog eventDialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel"></h4>
+			</div>
+			<div class="modal-body" id="ajaxContent">
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="submitClose" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button id="submitMyModal" type="button" class="btn btn-primary">保存</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="__ROOT__/statics/js/common.js"></script>
+<script>
+	Server = {
+		//服务器状态批量修改弹出框
+		editMoreIntTime: function() {
+			$('#myModalLabel').html('批量编辑间隔时间');
+			$('#submitMyModal').off();
+			$('#submitMyModal').on("click", function() {
+				Server.editMoreServe();
+			});
+			//var btn = $(obg);
+			$.get("<?php echo U('Pmd/edit_int_time');?>",{},
+					function(data) {
+						$('#ajaxContent').html(data);
+					});
+			$('#myModal').modal('show');
+		},
+		editMoreServe: function() {
+			$.post("<?php echo U('Pmd/edit_int_time');?>", {interval_time: $('#interval_time').val()}, function(data) {
+				if (data['status'] == 'success') {
+					alert(data['data']);
+					$('#submitMyModal').off();
+					$('#myModal').modal('hide');
+					location.reload();
+				}else{
+					alert(data['data']);
+				}
+			},'json');
+		},
+	}
+</script>
+
+</body>
+</html>

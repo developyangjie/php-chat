@@ -1,0 +1,305 @@
+<admintpl file="header"/>
+<style type="text/css">
+.col-auto { overflow: auto; _zoom: 1;_float: left;}
+.col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+.table th, .table td {vertical-align: middle;}
+.picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+  	<li class="active"><a href="#"  target="_self">{$Think.lang.SEND_MAIL}</a></li>
+	  <li><a href="{:U('RegularMail/email_list')}"  target="_self">{$Think.lang.EMAIL_SEND}</a></li>
+  </ul>
+  <form name="myform" id="myform" action="{:U('Operate/RegularMail/send_email')}" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+
+  <div class="col-auto">
+    <div class="table_full">
+      <table class="table table-bordered">
+		  <tr>
+			  <th width="100">{$Think.lang.CHOICE_SERVER}</th>
+			  <td>
+				  {:form_checkbox(gm_server(),$posts['sid'],'name="emailServerIds[]" id="server_id"',0,'100')}
+				  &nbsp;
+				  <h4><input type="checkbox" id="checkedAll">{$Think.lang.ALL_SELECT}/{$Think.lang.ALL_NOT_SELECT}</h4>
+			  </td>
+		  </tr>
+		  <script>
+			  //--全选--
+			  $('#checkedAll').click(function(){
+				  if(this.checked){
+					  $("[name='emailServerIds[]']:checkbox").prop('checked',true);
+				  }else{
+					  $("[name='emailServerIds[]']:checkbox").prop('checked',false);
+				  }
+
+			  });
+		  </script>
+		  <tr>
+			  <th width="80">{$Think.lang.EMAIL_TYPE}</th>
+			  <td>{:form_radio(array("0"=>L('ORDINARY'),"1"=>L('REWARD')),0,'class="form-control form_check" check-type="Text" name="emailType" id="system"')}</td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.ASSIGNMENT_NAME}</th>
+			  <td><input type="text" style="width:400px;" name="taskName" id="taskName" required value="" style="color:" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.ASSIGNMENT_NAME}"  />
+				  <span class="must_red" style="color:red;">{$Think.lang.TASK_LIST_NAME}</span></td>
+			  </td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.TASK_TIME}</th>
+			  <td> <input type="text" class="J_datetime" style="width:200px" name="taskCron" id="taskCron"  value="" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.TASK_TIME}" /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.SEND_UID_TASK}</th>
+			  <td> {:form_select(array("0"=>L('SEND_ALl_UID')),0,'class="form-control form_check" check-type="Text" name="emailUid" id="uid"')}
+			  </td>
+
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.MAIL_TITLE}</th>
+			  <td><input type="text" style="width:400px;" name="emailTitle" id="title" required value="" style="color:" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.MAIL_TITLE}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.CONTENT_DESCRIPTION}</th>
+			  <td> <textarea name="emailContent" id="description" required class="form-control" placeholder="{$Think.lang.CONTENT_DESCRIPTION}" style="min-height:120px;width:400px;"></textarea></td>
+		  </tr>
+
+			<tr style="display: none" id="encourage">
+				<th width="80">{$Think.lang.DIAMOND_GOLD_AWARD}</th>
+				<td><input type="number" style="width:150px;" name="emailGameDiamond" id="ug" required value="0" class="input input_hd J_title_color" placeholder="{$Think.lang.DIAMONDS}{$Think.lang.ITEM_NUMBER}"  />&nbsp;
+				<input type="number" style="width:150px;" name="emailGameCoin" id="ucoin" required value="0" class="input input_hd J_title_color" placeholder="{$Think.lang.GOLD}{$Think.lang.ITEM_NUMBER}"  />
+				</td>
+			</tr>
+
+            <tr style="display: none" id="itemsend">
+				<th width="80">{$Think.lang.ITEM_NAME}</th>
+				<td>
+					<select id = "itemtype">
+						<option value = "0">{$Think.lang.CURRENCY}</option>
+						<option value = "1">{$Think.lang.TIME_RESTORE_PROPS}</option>
+						<option value = "2">{$Think.lang.SPECIAL_COPY}</option>
+						<option value = "3">{$Think.lang.MODIFICATION_MATERIAL}</option>
+						<option value = "4">{$Think.lang.TREASURE_PROPS}</option>
+						<option value = "5">{$Think.lang.SPECIAL_ITEM}</option>
+						<option value = "6">{$Think.lang.EXPERIENCE_PROPS}</option>
+						<option value = "7">{$Think.lang.SYNTHETIC_MATERIAL}</option>
+						<option value = "9">{$Think.lang.PROPHET_MATERIAL}</option>
+						<option value = "10">{$Think.lang.MATERIAL_DEBRIS}</option>
+						<option value = "11">{$Think.lang.ASCENDING_ORDER_TRANSFER_MATERIAL}</option>
+						<option value = "12">{$Think.lang.BRAVE_FRAGMENT}</option>
+						<option value = "14">{$Think.lang.EQUIPMENT_FRAGMENT}</option>
+						<option value = "15">{$Think.lang.EQUIPMENT}</option>
+						<option value = "16">{$Think.lang.BRAVE}</option>
+						<option value = "17">{$Think.lang.MONSTER_CARD}</option>
+					</select>
+						<select class="form-control" id="itemlist">
+							<?php foreach ($item_info as $k => $v): ?>
+							<option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+							<?php endforeach; ?>
+						</select>
+					{$Think.lang.ITEM_NUMBER}:<input type="number" id="number" value="1" style="display:inline-block; width: 50px" class="form-control reward_num" >
+						<button type="button" id="addBtn" class="btn btn-success btn-sm">{$Think.lang.INCREASE_THE_PRIZE}</button><span style="color:red">{$Think.lang.REMARKS_ITEM}{$Think.lang.MATTERS_NEEDING_ATTENTION}</span>
+						<div id="addItem"></div>
+				</td>
+			</tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+	<div class="form-actions">
+		<button class="btn btn-primary btn_submit J_ajax_submit_btn" type="submit" id="subt">{$Think.lang.SUBMIT}</button>
+		<a class="btn" href="javascript:history.go(-1)">{$Think.lang.RETURN}</a>
+	</div>
+ </form>
+</div>
+
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript" src="__ROOT__/statics/js/content_addtop.js"></script>
+	<script>
+	/////---------------------
+	Wind.use('validate', 'ajaxForm', 'artDialog', function () {
+		var form = $('form.J_ajaxForms');
+		//ie处理placeholder提交问题
+		if ($.browser.msie) {
+			form.find('[placeholder]').each(function () {
+				var input = $(this);
+				if (input.val() == input.attr('placeholder')) {
+					input.val('');
+				}
+			});
+		}
+		//表单验证开始
+		form.validate({
+			//是否在获取焦点时验证
+			onfocusout:false,
+			//是否在敲击键盘时验证
+			onkeyup:false,
+			//当鼠标掉级时验证
+			onclick: false,
+			//验证错误
+			showErrors: function (errorMap, errorArr) {
+				//errorMap {'name':'错误信息'}
+				//errorArr [{'message':'错误信息',element:({})}]
+				try{
+					$(errorArr[0].element).focus();
+					art.dialog({
+						id:'error',
+						icon: 'error',
+						lock: true,
+						fixed: true,
+						background:"#CCCCCC",
+						opacity:0,
+						content: errorArr[0].message,
+						cancelVal: '{$Think.lang.SURE}',
+						cancel: function(){
+							$(errorArr[0].element).focus();
+						}
+					});
+				}catch(err){
+				}
+			},
+			highlight: false,
+			//是否在获取焦点时验证
+			onfocusout: false,
+			//验证通过，提交表单
+			submitHandler: function (forms) {
+				$(forms).ajaxSubmit({
+					url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+					dataType: 'json',
+					beforeSubmit: function (arr, $form, options) {
+
+					},
+					success: function (data, statusText, xhr, $form) {
+						if(data.status){
+							setCookie("refersh_time",1);
+							//添加成功
+							Wind.use("artDialog", function () {
+								art.dialog({
+									id: "succeed",
+									icon: "succeed",
+									fixed: true,
+									lock: true,
+									background: "#CCCCCC",
+									opacity: 0,
+									content: data.info,
+									button:[
+										{
+											name: '{$Think.lang.CONTINUE_TO_ADD}',
+											callback:function(){
+												reloadPage(window);
+												return true;
+											},
+											focus: true
+										}
+									]
+								});
+							});
+						}else{
+							isalert(data.info);
+						}
+					}
+				});
+			}
+		});
+	});
+
+	function getItemList(){
+		$.get("{:U('Operate/Email/get_item_json')}&itemType=" + $("#itemtype").val(),function(data){
+			var str = '';
+			if(data.Options){
+				for(var i = 0; i < data.Options.length; i++){
+					str += '<option value="'+data.Options[i].Value+'">(' + data.Options[i].Value + ')' + data.Options[i].DisplayText + '</option>';
+				}
+				$('#itemlist').html(str);
+
+			}
+		});
+	}
+	$(function () {
+		getItemList();
+	$("#itemtype").change(function(){
+		$('#itemlist').html('');
+		getItemList();
+	});
+
+	$('#addBtn').click(function(){
+		var $btn = $('<button type="button" class="btn btn-danger btn-sm">{$Think.lang.DELETE_OPERATION}</button>').click(function(){
+			$(this).parent().remove();
+		});
+		$('#addItem').append($('<div>')
+				.append('<li>{$Think.lang.NAME}：' + $("#itemlist").find("option:selected").text() + '，{$Think.lang.ITEM_NUMBER}：' + $('#number').val()+'</li>')
+				.append($btn)
+				.append('<input type="hidden" name="itemid[]" value="'+ $('#itemlist').val() +'">')
+				.append('<input type="hidden" name="type[]" value="'+ $("#itemtype").val() +'">')
+				.append('<input type="hidden" name="count[]" value="'+ $('#number').val() +'">'));
+
+
+	});
+		function showitem(){
+			var val = $("input[name='emailType']:checked").val();
+			if (val == 1) {
+				$("#encourage").show();
+				$("#itemsend").show();
+				$("#ug").attr("disabled", false);
+				$("#ucoin").attr("disabled", false);
+				$("#itemlist").attr("disabled", false);
+				$(".itemid").attr("disabled", false);
+				$(".type").attr("disabled", false);
+				$(".count").attr("disabled", false);
+			} else {
+				$("#encourage").hide();
+				$("#itemsend").hide();
+				$("#ug").attr("disabled", true);
+				$("#ucoin").attr("disabled", true);
+				$("#itemlist").attr("disabled", true);
+				$(".itemid").attr("disabled", true);
+				$(".type").attr("disabled", true);
+				$(".count").attr("disabled", true);
+			}
+		}
+
+		showitem();
+		$("input[name='emailType']").click(function () {
+			showitem();
+		});
+
+		$("#itemtype").change(function () {
+			var itemtype = $("#itemtype").val();
+			if(itemtype ==15 ||itemtype ==16){
+				$("#number").attr("readonly",true);
+				$("#number").val("1");
+			}else{
+				$("#number").attr("readonly",false);
+			}
+		});
+		$('#subt').click(function(){
+			var serverid = $("#server_id").val();
+			var title = $("#title").val();
+			var system = $("input[name='emailType']:checked").val();
+			var uid = $("#uid").val();
+			var description = $("#description").val();
+			var ug = $("#ug").val();
+			var ucoin = $("#ucoin").val();
+			var itemalert = "";
+			$("#addItem li").each(function(e){
+				itemalert += "    " + $(this).text() + "\n";
+			});
+			if(system ==1){
+				var content = "{$Think.lang.SERVICE_AREA}："+serverid+"\n{$Think.lang.MAIL_TITLE_ONE}："+title+"\n{$Think.lang.CONTENT}："+description+"\n{$Think.lang.PLAYER_UID}："+(uid == 0 ? "{$Think.lang.WHOLE}" : uid)+"\n{$Think.lang.DIAMONDS}："+ug+"\n{$Think.lang.GOLD}："+ucoin+"\n{$Think.lang.ITEM}：\n"+itemalert;
+			}else{
+				var content = "{$Think.lang.SERVICE_AREA}："+serverid+"\n{$Think.lang.MAIL_TITLE_ONE}："+title+"\n{$Think.lang.CONTENT}："+description+"\n{$Think.lang.PLAYER_UID}："+(uid == 0 ? "{$Think.lang.WHOLE}" : uid);
+			}
+				if(confirm(content))
+				{
+					document.form-horizontal.submit();
+				}
+				else return false;
+
+
+		});
+});
+</script>
+</body>
+</html>
+

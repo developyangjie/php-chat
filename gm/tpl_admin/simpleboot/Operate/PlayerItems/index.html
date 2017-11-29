@@ -1,0 +1,156 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">{$Think.lang.PLAYER_ITEM}</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+						{$Think.lang.PLAYER_UID}:
+						<input type="number" name="uid" style="width: 200px;" value="<?php echo I('uid');?>" placeholder="{$Think.lang.PLAYER_UID}">
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="50">{$Think.lang.NICE_NAME}</th>
+				<th width="50">{$Think.lang.GRADE}</th>
+				<th width="50">VIP</th>
+
+				<th width="50">{$Think.lang.GOLD}</th>
+				<th width="50">{$Think.lang.DIAMONDS}</th>
+				<th width="50">{$Think.lang.ITEM}</th>
+				<th width="50">{$Think.lang.OPERATION}</th>
+
+			</tr>
+			</thead>
+
+               <?php if(!empty($posts)):?>
+				<tr>
+					<td>{$posts.uname}</td>
+					<td>{$posts.ulv}</td>
+					<td>{$posts.vip}</td>
+
+					<td>{$posts.ucoin}</td>
+					<td>{$posts.ug}</td>
+					<td>
+						<foreach name="posts.item" item="vo">
+							{$vo.name}  {$Think.lang.ITEM_NUMBER} : {$vo.count}<br>
+						</foreach>
+					</td>
+					<td>
+						<button class="btn btn-primary btn-lg"><a href="{:U('PlayerItems/edits',array('uid'=>$posts['uid'],'serverid'=>$serverid))}"style = "color:white">{$Think.lang.EDIT_OPERATION}</a></button>
+						<span style="margin-left:100px;font-weight: 700;font-size: 26px;color:gray;">|</span>
+<!--						<button type="button" class="btn btn-primary btn-lg"  onclick="Server.synMoreServerDialog({$posts['uid']});">
+						修改物品
+					</button>-->
+						<script>
+							function clearData(cuid, serverid){
+								if(confirm("{$Think.lang.CONFIRM_EMPTY}")){
+									$.post('{:U('PlayerItems/update')}&cuid='+cuid+'&serverid='+serverid,function(data){
+										if(data > 0){
+											alert('{$Think.lang.SUCCESSFUL_OPERATION}');
+										}else{
+											alert('{$Think.lang.OPERATION_FAILED}');
+										}
+									});
+								}
+							}
+						</script>
+						<button type="button" style="margin-left: 100px;background-color:red;width:60px;height:35px;border-radius:6px;color:#fff;" onClick="clearData({$posts['cuid']},{$serverid});">
+							{$Think.lang.ELIMINATE}
+						</button>
+					</td>
+				</tr>
+               <?php endif;?>
+			<tfoot>
+			<tr>
+				<th width="50">{$Think.lang.NICE_NAME}</th>
+				<th width="50">{$Think.lang.GRADE}</th>
+				<th width="50">VIP</th>
+				<th width="50">{$Think.lang.GOLD}</th>
+				<th width="50">{$Think.lang.DIAMONDS}</th>
+				<th width="50">{$Think.lang.ITEM}</th>
+				<th width="50">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+
+		<div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog eventDialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel"></h4>
+			</div>
+			<div class="modal-body" id="ajaxContent">
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="submitClose" class="btn btn-default" data-dismiss="modal">{$Think.lang.CLOSE}</button>
+				<button id="submitMyModal" type="button" class="btn btn-primary">{$Think.lang.PRESERVATION}</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script src="__ROOT__/statics/js/common.js"></script>
+<script>
+	Server = {
+		//服务器状态批量修改弹出框
+		synMoreServerDialog: function(obg) {
+			$('#myModalLabel').html('{$Think.lang.MODIFY_ITEM}');
+			$('#submitMyModal').off();
+			$('#submitMyModal').on("click", function() {
+				Server.editMoreServe();
+			});
+			var btn = $(obg);
+			var server_id = $("select[name='server_id']").find("option:selected").val();
+			$.get("<?php echo U('PlayerItems/delete_items');?>",{ uid:obg,server_id:server_id},
+					function(data) {
+						$('#ajaxContent').html(data);
+					});
+			$('#myModal').modal('show');
+
+
+
+		},
+		editMoreServe: function() {
+			var  itemid = new Array();
+			$('.itemid').each(function(index){
+				itemid[index] = $(this).val();
+			});
+			var count = new Array();
+			$('.count').each(function(index){
+				count[index] = $(this).val();
+			});
+			$.post("<?php echo U('PlayerItems/delete_items');?>",
+					{
+						server_id: $('#server_id').val(),uid: $("#uid").val(),itemid:itemid,count:count,ug:$('#ug').val(),ucoin:$('#ucoin').val(),foodcnt:$('#foodcnt').val(),vip:$('#vip').val(),uexp:$('#uexp').val()
+					}, function(data) {
+				if (data['status'] == 'success') {
+					alert(data['data']);
+					$('#submitMyModal').off();
+					$('#myModal').modal('hide');
+					location.reload();
+				}
+			},'json');
+		}
+	}
+
+
+</script>
+
+</body>
+</html>

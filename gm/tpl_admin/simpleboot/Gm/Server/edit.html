@@ -1,0 +1,268 @@
+<admintpl file="header"/>
+<style type="text/css">
+.col-auto { overflow: auto; _zoom: 1;_float: left;}
+.col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+.table th, .table td {vertical-align: middle;}
+.picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+     <li><a href="{:U('Server/index')}">{$Think.lang.SERVER_LIST}</a></li>
+	 <li><a href="{:U('Server/add')}" target="_self">{$Think.lang.NEW_SERVER}</a></li>
+	 <li><a href="{:U('Server/merge')}" target="_self">{$Think.lang.MERGE_SERVER}</a></li>
+	  <li><a href="{:U('Server/server_patch')}" target="_self">{$Think.lang.HOT_UPDATE}</a></li>
+	 <li class="active"><a href="#"  target="_self">{$Think.lang.EDIT_PAGE}</a></li>
+  </ul>
+  <form name="myform" id="myform" action="" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+  <div class="col-auto">
+    <div class="table_full">
+      <table class="table table-bordered">
+			<tr>
+				<th width="80">{$Think.lang.SERVER_NAME}</th>
+				<td><input type="text" style="width:200px;" name="name"  required value="{$posts.name}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.SERVER_NAME}"  /></td>
+			</tr>
+		  <tr>
+			  <th width="80">{$Think.lang.SORT}</th>
+			  <td><input type="number" style="width:200px;" name="orderby"  required value="{$posts.orderby}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.SORT}ID"  />
+				  <span style="color: red;">{$Think.lang.THE_BIGGER_THE_VALUE_ON_THE}</span>
+			  </td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.DATABASE_HOST}</th>
+			  <td><input type="text" style="width:200px;" name="dbhost"  required value="{$posts.dbhost}" <?php echo !empty($posts['dbhost'])?'readonly':'';?>  class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.DATABASE_HOST}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.DATABASE_NAME}</th>
+			  <td><input type="text" style="width:200px;" name="dbname"  required value="{$posts.dbname}"  <?php echo !empty($posts['dbname'])?'readonly':'';?>  class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.DATABASE_NAME}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.DATABASE_USER}</th>
+			  <td><input type="text" style="width:200px;" name="dbuser"  required value="{$posts.dbuser}"  <?php echo !empty($posts['dbuser'])?'readonly':'';?> class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.DATABASE_USER}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.DATABASE_PASS}</th>
+			  <td><input type="password" style="width:200px;" name="dbpass" value="{$posts.dbpass}" <?php echo !empty($posts['dbpass'])?'readonly':'';?> class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.DATABASE_PASS}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.ENTRABCE}</th>
+			  <td><input type="url" style="width:400px;" name="ip" required value="{$posts.ip}" <?php echo !empty($posts['ip'])?'readonly':'';?> class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.ENTRABCE}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.SPARE_ENTRABCE}</th>
+			  <td><input type="url" style="width:400px;" name="spareip" value="{$posts.spareip}" <?php echo !empty($posts['spareip'])?'readonly':'';?> class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.SPARE_ENTRABCE}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.SPARE_ENTRABCE_TWO}</th>
+			  <td><input type="url" style="width:400px;" name="spareip2" value="{$posts.spareip2}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.SPARE_ENTRABCE}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.CLIENT_VERSION_NUMBER}</th>
+			  <td><input type="text" style="width:200px;" name="version" required value="{$posts.version}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.CLIENT_VERSION_NUMBER}!"  /></td>
+		  </tr>
+			<tr>
+				<th width="80">{$Think.lang.OPENING_HOURS}</th>
+				<td> <input type="text" class="J_datetime" style="width:200px" name="opentime" id="title"  value="{$posts.opentime}" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" /></td>
+			</tr>
+		  <tr>
+			  <th width="80">{$Think.lang.CHAT_SERVER_IP}</th>
+			  <td><input type="text" style="width:200px;" name="chatip" required value="{$posts.chatip}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.CHAT_SERVER_IP}!"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.CHAT_SERVER_PORT}</th>
+			  <td><input type="number" style="width:200px;" name="chatport" required value="{$posts.chatport}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.CHAT_SERVER_PORT}!"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.CHAT_SERVER_REDIS_IP}</th>
+			  <td><input type="text" style="width:200px;" name="chatredisip" required value="{$posts.chatredisip}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.CHAT_SERVER_REDIS_IP}!"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.REDIS_PORT}</th>
+			  <td><input type="number" style="width:200px;" name="chatredisport" required value="{$posts.chatredisport}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.REDIS_PORT}!"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.REDIS_PASS}</th>
+			  <td><input type="password" style="width:200px;" name="chatredisauth" value="{$posts.chatredisauth}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.REDIS_PASS}!"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.SERVER_STATUS}</th>
+			  <td>
+				  {:form_select(array(0=>L('OPEN_START'),1=>L('HOT'),2=>L('MAINTAIN'),3=>L('INTERNAL_TESTING')),$posts['type'],'class="form-control form_check" check-type="Text" name="type" id="type"')}
+
+			  </td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.UPDATE_PACKAGE_SIZE}</th>
+			  <td><input type="number" style="width:200px;" name="patchsize" required value="{$posts.patchsize}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.UPDATE_PACKAGE_SIZE}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.HARMONIOUS_STATE}</th>
+			  <td>
+				  {:form_select(array(0=>L('AUTOMATIC'),1=>L('COMPULSORY_HARMONY'),2=>L('FORCED_DISHARMONY')),$posts['showoff'],'class="form-control form_check" check-type="Text" name="showoff" id="showoff"')}
+
+			  </td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.GOOGLE_STORE_VERSION_NUMBER}</th>
+			  <td><input type="text" style="width:200px;" name="state" required value="{$posts.state}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.GOOGLE_STORE_VERSION_NUMBER}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.IOS_STORE_VERSION_NUMBER}</th>
+			  <td><input type="text" style="width:200px;" name="stateios" required value="{$posts.stateios}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.IOS_STORE_VERSION_NUMBER}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.DATABASE_HOST_READ_ONLY}</th>
+			  <td><input type="text" style="width:200px;" name="dbhost_r" value="{$posts.dbhost_r}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.DATABASE_HOST_READ_ONLY}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.DATABASE_NAME_READ_ONLY}</th>
+			  <td><input type="text" style="width:200px;" name="dbname_r" value="{$posts.dbname_r}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.DATABASE_NAME_READ_ONLY}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.DATABASE_USER_READ_ONLY}</th>
+			  <td><input type="text" style="width:200px;" name="dbuser_r" value="{$posts.dbuser_r}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.DATABASE_USER_READ_ONLY}"  /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.DATABASE_PASS_READ_ONLY}</th>
+			  <td><input type="password" style="width:200px;" name="dbpass_r" value="{$posts.dbpass_r}" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.DATABASE_PASS_READ_ONLY}"  /></td>
+		  </tr>
+		  </tbody>
+      </table>
+    </div>
+  </div>
+	  <input type="hidden" name="old_version" value="{$posts.version}">
+	  <input type="hidden" name="id" value="{$posts.id}">
+  <div class="form-actions">
+        <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">{$Think.lang.SUBMIT}</button>
+        <a class="btn" href="{:U('Server/index')}">{$Think.lang.RETURN}</a>
+  </div>
+ </form>
+
+</div>
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+
+<script type="text/javascript" src="__ROOT__/statics/js/content_addtop.js"></script><script type="text/javascript">
+$(function () {
+
+	//setInterval(function(){public_lock_renewal();}, 10000);
+	$(".J_ajax_close_btn").on('click', function (e) {
+	    e.preventDefault();
+	    Wind.use("artDialog", function () {
+	        art.dialog({
+	            id: "question",
+	            icon: "question",
+	            fixed: true,
+	            lock: true,
+	            background: "#CCCCCC",
+	            opacity: 0,
+	            content: "您确定需要关闭当前页面嘛？",
+	            ok:function(){
+					setCookie("refersh_time",1);
+					window.close();
+					return true;
+				}
+	        });
+	    });
+	});
+	/////---------------------
+	 Wind.use('validate', 'ajaxForm', 'artDialog', function () {
+
+	            var form = $('form.J_ajaxForms');
+	        //ie处理placeholder提交问题
+	        if ($.browser.msie) {
+	            form.find('[placeholder]').each(function () {
+	                var input = $(this);
+	                if (input.val() == input.attr('placeholder')) {
+	                    input.val('');
+	                }
+	            });
+	        }
+	        //表单验证开始
+	        form.validate({
+				//是否在获取焦点时验证
+				onfocusout:false,
+				//是否在敲击键盘时验证
+				onkeyup:false,
+				//当鼠标掉级时验证
+				onclick: false,
+	            //验证错误
+	            showErrors: function (errorMap, errorArr) {
+					//errorMap {'name':'错误信息'}
+					//errorArr [{'message':'错误信息',element:({})}]
+					try{
+						$(errorArr[0].element).focus();
+						art.dialog({
+							id:'error',
+							icon: 'error',
+							lock: true,
+							fixed: true,
+							background:"#CCCCCC",
+							opacity:0,
+							content: errorArr[0].message,
+							cancelVal: '确定',
+							cancel: function(){
+								$(errorArr[0].element).focus();
+							}
+						});
+					}catch(err){
+					}
+	            },
+	            //验证规则
+
+	            //给未通过验证的元素加效果,闪烁等
+	            highlight: false,
+	            //是否在获取焦点时验证
+	            onfocusout: false,
+	            //验证通过，提交表单
+	            submitHandler: function (forms) {
+	                $(forms).ajaxSubmit({
+	                    url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+	                    dataType: 'json',
+	                    beforeSubmit: function (arr, $form, options) {
+	                        
+	                    },
+	                    success: function (data, statusText, xhr, $form) {
+	                        if(data.status){
+								setCookie("refersh_time",1);
+								//添加成功
+								Wind.use("artDialog", function () {
+								    art.dialog({
+								        id: "succeed",
+								        icon: "succeed",
+								        fixed: true,
+								        lock: true,
+								        background: "#CCCCCC",
+								        opacity: 0,
+								        content: data.info,
+										button:[
+											{
+												name: '{$Think.lang.CONTINUE_TO_EDIT}',
+												callback:function(){
+													reloadPage(window);
+													return true;
+												},
+												focus: true
+											},{
+												name: '{$Think.lang.RETURN_LIST_PAGE}',
+												callback:function(){
+													location='{:U('Server/index')}';
+													return true;
+												}
+											}
+										]
+								    });
+								});
+							}else{
+								isalert(data.info);
+							}
+	                    }
+	                });
+	            }
+	        });
+	    });
+	////-------------------------
+});
+</script>
+</body>
+</html>

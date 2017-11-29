@@ -1,0 +1,264 @@
+<admintpl file="header"/>
+<style type="text/css">
+.col-auto { overflow: auto; _zoom: 1;_float: left;}
+.col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+.table th, .table td {vertical-align: middle;}
+.picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+     <li><a href="{:U('PackageType/index')}">{$Think.lang.PACKAGE_CODE_LIST}</a></li>
+     <li class="active"><a href="{:U('PackageType/add')}"  target="_self">{$Think.lang.NEW_PACKAGE_CODE}</a></li>
+  </ul>
+  <form name="myform" id="myform" action="{:U('Operate/PackageType/add')}" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+  <div class="col-auto">
+    <div class="table_full">
+      <table class="table table-bordered">
+		  <tr>
+			  <th width="120">{$Think.lang.ACTIVITY_CODE_PREFIX}</th>
+			  <td>
+				  <input type="text" style="width:400px;" name="code_pre" id="code_pre" required value="" style="color:" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.ACTIVITY_CODE_PREFIX}"  />
+				  <span class="must_red">{$Think.lang.IN_ENGLISH}</span>
+			  </td>
+		  </tr>
+		  <tr>
+			  <th width="120">{$Think.lang.ACTIVITY_PACKS_CODE_NUMBER}</th>
+			  <td>
+				  <input type="number" style="width:400px;" name="code_num" id="code_num" required value="" style="color:" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.ACTIVITY_PACKS_CODE_NUMBER}"  />
+				  <span class="must_red">*</span>
+			  </td>
+		  </tr>
+		  <tr>
+			  <th width="120">{$Think.lang.ACTIVITY_TITLE_CODE_PACKAGE}</th>
+			  <td>
+				  <input type="text" style="width:400px;" name="title" id="title" required value="" style="color:" class="input input_hd J_title_color" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.ACTIVITY_TITLE_CODE_PACKAGE}"  />
+				  <span class="must_red">*</span>
+			  </td>
+		  </tr>
+
+		  <tr>
+			  <th width="120">{$Think.lang.USE_PACKAGE}</th>
+			  <td> <textarea name="content" class="form-control" placeholder="{$Think.lang.USE_PACKAGE}" style="min-height:120px;width:400px;"></textarea></td>
+		  </tr>
+		  <tr>
+		  <tr>
+			  <th width="80">{$Think.lang.ITEM_NAME}</th>
+			  <td>
+				  <select id = "itemtype">
+					  <option value = "0">{$Think.lang.CURRENCY}</option>
+					  <option value = "1">{$Think.lang.TIME_RESTORE_PROPS}</option>
+					  <option value = "2">{$Think.lang.SPECIAL_COPY}</option>
+					  <option value = "3">{$Think.lang.MODIFICATION_MATERIAL}</option>
+					  <option value = "4">{$Think.lang.TREASURE_PROPS}</option>
+					  <option value = "5">{$Think.lang.SPECIAL_ITEM}</option>
+					  <option value = "6">{$Think.lang.EXPERIENCE_PROPS}</option>
+					  <option value = "7">{$Think.lang.SYNTHETIC_MATERIAL}</option>
+					  <option value = "9">{$Think.lang.PROPHET_MATERIAL}</option>
+					  <option value = "10">{$Think.lang.MATERIAL_DEBRIS}</option>
+					  <option value = "11">{$Think.lang.ASCENDING_ORDER_TRANSFER_MATERIAL}</option>
+					  <option value = "12">{$Think.lang.BRAVE_FRAGMENT}</option>
+					  <option value = "14">{$Think.lang.EQUIPMENT_FRAGMENT}</option>
+					  <option value = "15">{$Think.lang.EQUIPMENT}</option>
+					  <option value = "16">{$Think.lang.BRAVE}</option>
+					  <option value = "17">{$Think.lang.MONSTER_CARD}</option>
+				  </select>
+				  <select class="form-control" id="itemlist">
+
+				  </select>
+				  {$Think.lang.ITEM_NUMBER}:<input type="number" id="number" value="1" style="display:inline-block; width: 30px" class="form-control reward_num" >
+				  <button type="button" id="addBtn" class="btn btn-success btn-sm">{$Think.lang.INCREASE_THE_PRIZE}</button><span style="color:red">{$Think.lang.MATTERS_NEEDING_ATTENTION}</span>
+				  <div id="addItem"></div>
+			  </td>
+		  </tr>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.START_TIME}</th>
+			  <td> <input type="text" class="J_datetime" style="width:150px" name="start_time" id="title"  value="<?php echo $posts['start_time']?date('Y-m-d H:i',$posts['start_time']):date('Y-m-d 00:00',time());?>" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" /></td>
+		  </tr>
+		  <tr>
+			  <th width="80">{$Think.lang.END_TIME}</th>
+			  <td> <input type="text" class="J_datetime" style="width:150px" name="end_time"   value="<?php echo $posts['end_time']?date('Y-m-d H:i',$posts['end_time']):date('Y-m-d 23:59',strtotime('+6 days'));?>" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" /></td>
+		  </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="form-actions">
+        <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">{$Think.lang.SUBMIT}</button>
+        <a class="btn" href="{:U('PackageType/index')}">{$Think.lang.RETURN}</a>
+  </div>
+ </form>
+</div>
+
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript" src="__ROOT__/statics/js/content_addtop.js"></script><script type="text/javascript"> 
+$(function () {
+
+	//setInterval(function(){public_lock_renewal();}, 10000);
+	$(".J_ajax_close_btn").on('click', function (e) {
+	    e.preventDefault();
+	    Wind.use("artDialog", function () {
+	        art.dialog({
+	            id: "question",
+	            icon: "question",
+	            fixed: true,
+	            lock: true,
+	            background: "#CCCCCC",
+	            opacity: 0,
+	            content: "{$Think.lang.CLOSE_THE_CURRENT_PAGE}",
+	            ok:function(){
+					setCookie("refersh_time",1);
+					window.close();
+					return true;
+				}
+	        });
+	    });
+	});
+	/////---------------------
+	 Wind.use('validate', 'ajaxForm', 'artDialog', function () {
+			//javascript
+	        
+//	            //编辑器
+//	            editorcontent = new baidu.editor.ui.Editor();
+//	            editorcontent.render( 'content' );
+//	            try{editorcontent.sync();}catch(err){};
+//	            //增加编辑器验证规则
+//	            jQuery.validator.addMethod('editorcontent',function(){
+//	                try{editorcontent.sync();}catch(err){};
+//	                return editorcontent.hasContents();
+//	            });
+	            var form = $('form.J_ajaxForms');
+	        //ie处理placeholder提交问题
+	        if ($.browser.msie) {
+	            form.find('[placeholder]').each(function () {
+	                var input = $(this);
+	                if (input.val() == input.attr('placeholder')) {
+	                    input.val('');
+	                }
+	            });
+	        }
+	        //表单验证开始
+	        form.validate({
+				//是否在获取焦点时验证
+				onfocusout:false,
+				//是否在敲击键盘时验证
+				onkeyup:false,
+				//当鼠标掉级时验证
+				onclick: false,
+	            //验证错误
+	            showErrors: function (errorMap, errorArr) {
+					//errorMap {'name':'错误信息'}
+					//errorArr [{'message':'错误信息',element:({})}]
+					try{
+						$(errorArr[0].element).focus();
+						art.dialog({
+							id:'error',
+							icon: 'error',
+							lock: true,
+							fixed: true,
+							background:"#CCCCCC",
+							opacity:0,
+							content: errorArr[0].message,
+							cancelVal: '{$Think.lang.SURE}',
+							cancel: function(){
+								$(errorArr[0].element).focus();
+							}
+						});
+					}catch(err){
+					}
+	            },
+	            //验证规则
+//	            rules: {'post[post_title]':{required:1},'post[post_content]':{editorcontent:true}},
+//	            //验证未通过提示消息
+//	            messages: {'post[post_title]':{required:'请输入标题'},'post[post_content]':{editorcontent:'内容不能为空'}},
+	            //给未通过验证的元素加效果,闪烁等
+	            highlight: false,
+	            //是否在获取焦点时验证
+	            onfocusout: false,
+	            //验证通过，提交表单
+	            submitHandler: function (forms) {
+	                $(forms).ajaxSubmit({
+	                    url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+	                    dataType: 'json',
+	                    beforeSubmit: function (arr, $form, options) {
+	                        
+	                    },
+	                    success: function (data, statusText, xhr, $form) {
+	                        if(data.status){
+								setCookie("refersh_time",1);
+								//添加成功
+								Wind.use("artDialog", function () {
+								    art.dialog({
+								        id: "succeed",
+								        icon: "succeed",
+								        fixed: true,
+								        lock: true,
+								        background: "#CCCCCC",
+								        opacity: 0,
+								        content: data.info,
+										button:[
+											{
+												name: '{$Think.lang.CONTINUE_TO_ADD}',
+												callback:function(){
+													reloadPage(window);
+													return true;
+												},
+												focus: true
+											},{
+												name: '{$Think.lang.RETURN_LIST_PAGE}',
+												callback:function(){
+													location='{:U('PackageType/index')}';
+													return true;
+												}
+											}
+										]
+								    });
+								});
+							}else{
+								isalert(data.info);
+							}
+	                    }
+	                });
+	            }
+	        });
+	    });
+	////-------------------------
+});
+function getItemList(){
+	$.get("{:U('Operate/Email/get_item_json')}&itemType=" + $("#itemtype").val(),function(data){
+		var str = '';
+		if(data.Options){
+			for(var i = 0; i < data.Options.length; i++){
+				str += '<option value="'+data.Options[i].Value+'">' + data.Options[i].DisplayText + '</option>';
+			}
+			$('#itemlist').html(str);
+		}
+	});
+}
+
+$(function () {
+	getItemList();
+	$("#itemtype").change(function(){
+		$('#itemlist').html('');
+		getItemList();
+	});
+
+	$('#addBtn').click(function(){
+		var $btn = $('<button type="button" class="btn btn-danger btn-sm">{$Think.lang.DELETE_OPERATION}</button>').click(function(){
+			$(this).parent().remove();
+		});
+		$('#addItem').append($('<div>')
+				.append('{$Think.lang.NAME}：' + $("#itemlist").find("option:selected").text() + '，{$Think.lang.ITEM_NUMBER}：' + $('#number').val())
+				.append($btn)
+				.append('<input type="hidden" name="itemid[]" value="'+ $('#itemlist').val() +'">')
+				.append('<input type="hidden" name="type[]" value="'+ $("#itemtype").val() +'">')
+				.append('<input type="hidden" name="count[]" value="'+ $('#number').val() +'">'));
+
+
+	});
+});
+</script>
+</body>
+</html>

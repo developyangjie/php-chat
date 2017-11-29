@@ -1,0 +1,52 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+	<div class="wrap jj">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('user/index')}">{$Think.lang.ADMINISTRATORS}</a></li>
+			<li><a href="{:U('user/add')}">{$Think.lang.ADD_ADMINISTRATORS}</a></li>
+		</ul>
+		<div class="common-form">
+			<form method="post" class="form-horizontal J_ajaxForm" action="{:U('User/edit_post')}">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.USERNAME}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="user_login" value="{$user_login}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.PASS}:</label>
+						<div class="controls">
+							<input type="password" class="input" name="user_pass" value="" placeholder="******">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.EMAIL}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="user_email" value="{$user_email}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.ROLE}:</label>
+						<div class="controls">
+							<foreach name="roles" item="vo">
+							<label class="checkbox inline">
+								<php>$role_id_checked=in_array($vo['id'],$role_ids)?"checked":"";</php>
+								<input value="{$vo.id}" type="checkbox" name="role_id[]" {$role_id_checked}>{$vo.name}
+							</label>
+							</foreach>
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-actions">
+					<input type="hidden" name="id" value="{$id}" />
+					<button type="submit" class="btn btn-primary btn_submit J_ajax_submit_btn">{$Think.lang.UPDATE}</button>
+					<a class="btn" href="javascript:history.go(-1);">{$Think.lang.RETURN}</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li ><a href="{:U('ActiveConfiguration/index')}"  target="_self">{$Think.lang.ACTIVE_CONFIGURATION}</a></li>
+		<li><a href="{:U('ActiveConfiguration/add')}" target="_self">{$Think.lang.ADD_ACTIVE_CONFIGURATION}</a></li>
+		<li><a href="{:U('ActiveConfiguration/accumulate')}" target="_self">{$Think.lang.ACTIVITY_ACCUMULATION_ALLOCATIO_NTIRED}</a></li>
+		<li><a href="{:U('ActiveConfiguration/accumulate_list')}"  target="_self">{$Think.lang.LIST_OF_ACTIVITIES}</a></li>
+		<li class="active"><a href="javascript:;">{$Think.lang.TIRED_ACTIVITY_LIST}</a></li>
+		<li><a href="{:U('ActiveConfiguration/weekaccumulate_list')}"  target="_self">{$Think.lang.WEEK_ACTIVE}</a></li>
+		<li><a href="{:U('ActiveConfiguration/timedpacks')}"  target="_self">{$Think.lang.TIMED_PACKS}</a></li>
+		<li><a href="{:U('ActiveConfiguration/timedpacks_list')}"  target="_self">{$Think.lang.TIMED_PACKS_LIST}</a></li>
+
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),$serverid,'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="100">ID</th>
+				<th width="100">{$Think.lang.CONSUMPTION}</th>
+				<th width="100">{$Think.lang.SERVER_ID}</th>
+				<th width="100">{$Think.lang.PROP_TYPE_ONE}</th>
+				<th width="100">{$Think.lang.PROP_ONE}</th>
+				<th width="100">{$Think.lang.COUNT_ONE}</th>
+				<th width="100">{$Think.lang.PROP_TYPE_TWO}</th>
+				<th width="100">{$Think.lang.PROP_TWO}</th>
+				<th width="100">{$Think.lang.COUNT_TWO}</th>
+				<th width="100">{$Think.lang.PROP_TYPE_THREE}</th>
+				<th width="100">{$Think.lang.PROP_THREE}</th>
+				<th width="100">{$Think.lang.COUNT_THREE}</th>
+				<th width="100">{$Think.lang.PROP_TYPE_FOUR}</th>
+				<th width="100">{$Think.lang.PROP_FOUR}</th>
+				<th width="100">{$Think.lang.COUNT_FOUR}</th>
+				<th width="100">{$Think.lang.OPERATION}</th>
+			</tr>
+			</thead>
+
+			<foreach name="posts"  item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.xiaofei}</td>
+					<td>{$vo.serverid}</td>
+					<td>{$vo.type1}</td>
+					<td>{$vo.item1}</td>
+					<td>{$vo.count1}</td>
+					<td>{$vo.type2}</td>
+					<td>{$vo.item2}</td>
+					<td>{$vo.count2}</td>
+					<td>{$vo.type3}</td>
+					<td>{$vo.item3}</td>
+					<td>{$vo.count3}</td>
+					<td>{$vo.type4}</td>
+					<td>{$vo.item4}</td>
+					<td>{$vo.count4}</td>
+					<td><a href="{:U('ActiveConfiguration/delete_tired',array('id'=>$vo['id'],'serverid'=>$serverid))}">{$Think.lang.DELETE_OPERATION}</a></td>
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="100">ID</th>
+				<th width="100">{$Think.lang.CONSUMPTION}</th>
+				<th width="100">{$Think.lang.SERVER_ID}</th>
+				<th width="100">{$Think.lang.PROP_TYPE_ONE}</th>
+				<th width="100">{$Think.lang.PROP_ONE}</th>
+				<th width="100">{$Think.lang.COUNT_ONE}</th>
+				<th width="100">{$Think.lang.PROP_TYPE_TWO}</th>
+				<th width="100">{$Think.lang.PROP_TWO}</th>
+				<th width="100">{$Think.lang.COUNT_TWO}</th>
+				<th width="100">{$Think.lang.PROP_TYPE_THREE}</th>
+				<th width="100">{$Think.lang.PROP_THREE}</th>
+				<th width="100">{$Think.lang.COUNT_THREE}</th>
+				<th width="100">{$Think.lang.PROP_TYPE_FOUR}</th>
+				<th width="100">{$Think.lang.PROP_FOUR}</th>
+				<th width="100">{$Think.lang.COUNT_FOUR}</th>
+				<th width="100">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+		<div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>
+<script>
+	$(function(){
+		$(".delect_blog_sort").click(function(){
+			return confirm("{$Think.lang.CONFIRM_RESET}");
+		});
+	});
+
+</script>

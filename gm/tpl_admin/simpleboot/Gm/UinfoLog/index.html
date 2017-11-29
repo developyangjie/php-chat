@@ -1,0 +1,71 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">{$Think.lang.SERVER_NAME}</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+					    {$Think.lang.TYPE}:
+						{:form_select(array(1=>L('CLOSURE'),2=>L('LIFTED')),I('type'),'class="form-control form_check" style="width:100px;" check-type="Text" name="type" id="type"',L('PLEASE_SELECT'))}
+						{$Think.lang.PLAYER_UID}:
+						<input type="number" name="uid" style="width: 100px;" value="<?php echo I('uid');?>" placeholder="{$Think.lang.PLAYER_UID}">
+						{$Think.lang.START_TIME}：
+                        <input type="text" class="J_date" style="width:100px" name="start_time" id=""  value="<?php echo I('start_time')?I('start_time'): date('Y-m-d', strtotime('-6 days'));?>" placeholder="{$Think.lang.START_TIME}" />
+                        {$Think.lang.END_TIME}：
+                        <input type="text" class="J_date" style="width:100px" name="end_time" id=""  value="<?php echo I('end_time')?I('end_time'):date('Y-m-d');?>" placeholder="{$Think.lang.END_TIME}" />
+                        <input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="J_ajaxForm" action="" method="post">
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="50">UID</th>
+				<th width="50">{$Think.lang.NICE_NAME}</th>
+				<th width="50">{$Think.lang.TYPE}</th>
+				<th width="50">{$Think.lang.REASON}</th>
+				<th width="50">{$Think.lang.CLOSURE_RELEASE_TIME}</th>
+				<th width="50">{$Think.lang.OPERATION_TIME}</th>
+			</tr>
+			</thead>
+			   <?php if(!empty($lists)):?>
+			   <foreach name="lists" item="vo" >
+			   <tr>
+                    <td>{$vo.uid}</td>
+				   	<td>{$vo.uname}</td>
+					<td><if condition="$vo.type eq 1"><span style="color:red;">{$Think.lang.CLOSURE}</span><else /><span style="color:green;">{$Think.lang.LIFTED}</span></if></td>
+					<td><if condition="$vo.type eq 1">{:disable_uinfo($vo['forbidreason'])}<else />{:enable_uinfo($vo['forbidreason'])}</if></td>
+					<td>
+					<?php if(strlen($vo['forbidtime'])>0):?>
+					{$vo.forbidtime}
+					<?php else:?>
+					{$vo.cts|date="Y-m-d H:i:s",###}
+					<?php endif;?>
+					</td>
+					<td>{$vo.cts|date="Y-m-d H:i:s",###}</td>
+				</tr>
+			   </foreach>
+			   <?php endif;?>
+			<tfoot>
+			<tr>
+				<th width="50">UID</th>
+				<th width="50">{$Think.lang.NICE_NAME}</th>
+				<th width="50">{$Think.lang.TYPE}</th>
+				<th width="50">{$Think.lang.REASON}</th>
+				<th width="50">{$Think.lang.CLOSURE_RELEASE_TIME}</th>
+				<th width="50">{$Think.lang.OPERATION_TIME}</th>
+			</tr>
+			</tfoot>
+		</table>
+         <div class="pagination">{$Page}</div>
+    </form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

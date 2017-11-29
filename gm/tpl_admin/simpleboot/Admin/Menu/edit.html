@@ -1,0 +1,123 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+	<div class="wrap jj">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('menu/index')}">{$Think.lang.BACKGROUND_MENU}</a></li>
+			<li><a href="{:U('menu/add')}">{$Think.lang.ADD_MENU}</a></li>
+		</ul>
+		<div class="common-form">
+			<form method="post" class="form-horizontal J_ajaxForm" action="{:U('Menu/edit_post')}">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.SUPERIOR}:</label>
+						<div class="controls">
+							<select name="parentid" class="normal_select">
+								<option value="0">{$Think.lang.AS_A_MENU}</option> {$select_categorys}
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.NAME}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="name" value="{$data.name}">
+							<span class="must_red">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.APPLICATION}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="app" id="app" value="{$data.app}">
+							<span class="must_red">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.MODULAR}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="model" id="model" value="{$data.model}">
+							<span class="must_red">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.METHOD}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="action" id="action" value="{$data.action}">
+							<span class="must_red">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.PARAMETER}:</label>
+						<div class="controls">
+							<input type="text" class="input length_5" name="data" value="{$data.data}"> 例:id=3&amp;p=3
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.ICON}:</label>
+						<div class="controls">
+							<input type="text" class="input" name="icon" id="action" value="{$data.icon}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.REMARKS}:</label>
+						<div class="controls">
+							<textarea name="remark" rows="5" cols="57">{$data.remark}</textarea>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.ROLE_STATE}:</label>
+						<div class="controls">
+							<select name="status" class="normal_select">
+								<option value="1" name="data.status">{$Think.lang.DISPLAY}</option>
+								<php>$status_selected=empty($data['status'])?"selected":"";</php>
+								<option value="0" name="data.status" {$status_selected}>{$Think.lang.HIDE}</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">{$Think.lang.TYPE}:</label>
+						<div class="controls">
+							<select name="type" class="normal_select">
+								<option value="1" name="data.type">{$Think.lang.AUTHORITY_AUTHENTICATION_TYPE}</option>
+								<php>$type_selected=empty($data['type'])?"selected":"";</php>
+								<option value="0" name="data.type" {$type_selected}>{$Think.lang.JUST_ONLY_MENU}</option>
+							</select>
+							{$Think.lang.PAY_ATTENTION}
+						</div>
+					</div>
+				</fieldset>
+
+				<div class="form-actions">
+					<input type="hidden" name="id" value="{$data.id}" />
+					<button type="submit"
+						class="btn btn-primary btn_submit  J_ajax_submit_btn">{$Think.lang.UPDATE}</button>
+					<button class="btn J_ajax_close_btn" type="submit">{$Think.lang.CLOSE}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+	<script>
+		$(function() {
+			$(".J_ajax_close_btn").on('click', function(e) {
+				e.preventDefault();
+				Wind.use("artDialog", function() {
+					art.dialog({
+						id : "question",
+						icon : "question",
+						fixed : true,
+						lock : true,
+						background : "#CCCCCC",
+						opacity : 0,
+						content : "{$Think.lang.CLOSE_THE_CURRENT_PAGE}",
+						ok : function() {
+							setCookie('refersh_time_admin_menu_index', 1);
+							window.close();
+							return true;
+						}
+					});
+				});
+			});
+		});
+	</script>
+</body>
+</html>

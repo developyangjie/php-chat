@@ -1,0 +1,64 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('user/index')}">{$Think.lang.ADMINISTRATORS}</a></li>
+			<li><a href="{:U('user/add')}">{$Think.lang.ADD_ADMINISTRATORS}</a></li>
+		</ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+			<tr>
+				<th width="50">ID</th>
+				<th>{$Think.lang.USERNAME}</th>
+				<th>{$Think.lang.FINALLY_LOGIN_IP}</th>
+				<th>{$Think.lang.FINALLY_LOGIN_TIME}</th>
+				<th>E-mail</th>
+				<th>{$Think.lang.ROLE_STATE}</th>
+				<th width="120">{$Think.lang.MANAGEMENT_OPERATION}</th>
+			</tr>
+			</thead>
+			<tbody>
+			<php>$user_statuses=array("0"=>L('STOP'),"1"=>L('START'),"2"=>L('NOT_VERIFIED'));</php>
+			<foreach name="users" item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.user_login}</td>
+					<td>{$vo.last_login_ip}</td>
+					<td>
+						<if condition="$vo['last_login_time'] eq 0">
+							{$Think.lang.USER_HAS_NOT_LANDED}
+
+							<else />
+							{$vo.last_login_time}
+						</if>
+					</td>
+					<td>{$vo.user_email}</td>
+					<td>{$user_statuses[$vo['user_status']]}</td>
+					<td>
+						<if condition="$vo['id'] eq 1">
+						<font color="#cccccc">{$Think.lang.EDIT_OPERATION}</font> | <font color="#cccccc">{$Think.lang.DELETE_OPERATION}</font> |
+							<if condition="$vo['user_status'] eq 1">
+								<font color="#cccccc">{$Think.lang.STOP}</font>
+							<else />
+								<font color="#cccccc">{$Think.lang.START}</font>
+							</if>
+						<else />
+							<a href='{:U("user/edit",array("id"=>$vo["id"]))}'>{$Think.lang.EDIT_OPERATION}</a> |
+							<a class="J_ajax_del" href="{:U('user/delete',array('id'=>$vo['id']))}">{$Think.lang.DELETE_OPERATION}</a> |
+							<if condition="$vo['user_status'] eq 1">
+								<a href="{:U('user/ban',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要停用此用户吗？">{$Think.lang.STOP}</a>
+							<else />
+								<a href="{:U('user/cancelban',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要启用此用户吗？">{$Think.lang.START}</a>
+							</if>
+						</if>
+					</td>
+				</tr>
+				</foreach>
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

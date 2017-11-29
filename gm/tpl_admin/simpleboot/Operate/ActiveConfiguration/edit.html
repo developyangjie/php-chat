@@ -1,0 +1,323 @@
+<admintpl file="header"/>
+<style type="text/css">
+	.col-auto { overflow: auto; _zoom: 1;_float: left;}
+	.col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+	.table th, .table td {vertical-align: middle;}
+	.picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#"  target="_self">{$Think.lang.EDIT_PAGE}</a></li>
+
+	</ul>
+	<form name="myform" id="myform" action="" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+
+		<div class="col-auto">
+			<div class="table_full">
+				<table class="table table-bordered">
+					<tr>
+						<th width="80">{$Think.lang.CHOICE_SERVER}</th>
+						<td>{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" readonly name="server_id" id="server_id"')}</td>
+					<tr>
+					<tr>
+						<th width="80">{$Think.lang.SELECTION_ACTIVITY}</th>
+						<td>
+							<select name="said" id="said"  class="normal_select" readonly>
+								<option value="1" <if condition="$posts['said'] eq '1'">selected</if> >{$Think.lang.XIULUO_ROAD}</option>
+								<option value="2" <if condition="$posts['said'] eq '2'">selected</if> >{$Think.lang.FIRST_PAY_ACTIVITY}</option>
+								<option value="6" <if condition="$posts['said'] eq '6'">selected</if> >{$Think.lang.CUMULATIVE_CHARGE}</option>
+								<option value="7" <if condition="$posts['said'] eq '7'">selected</if> >{$Think.lang.CUMULATIVE_CONSUMPTION}</option>
+								<option value="8" <if condition="$posts['said'] eq '8'">selected</if> >{$Think.lang.MAKE_AN_APPOINTMENT}</option>
+								<option value="9" <if condition="$posts['said'] eq '9'">selected</if> >{$Think.lang.FOLLOW_FB}</option>
+								<option value="10" <if condition="$posts['said'] eq '10'">selected</if> >{$Think.lang.MAKE_AN_APPOINTMENT_WELFARE}</option>
+								<option value="11" <if condition="$posts['said'] eq '11'">selected</if> >{$Think.lang.DELETE_TEST}</option>
+								<option value="12" <if condition="$posts['said'] eq '12'">selected</if> >{$Think.lang.DOUBLE_EGG_SKIN_EXCHANGE}</option>
+								<option value="13" <if condition="$posts['said'] eq '13'">selected</if> >{$Think.lang.SPECIAL_DRAW}</option>
+								<option value="14" <if condition="$posts['said'] eq '14'">selected</if> >{$Think.lang.PAY_ACTIVITY}</option>
+								<option value="15" <if condition="$posts['said'] eq '15'">selected</if> >{$Think.lang.DROP_DOBULE_ACTIVITY}</option>
+								<option value="16" <if condition="$posts['said'] eq '16'">selected</if> >{$Think.lang.DROP_EGG_ACTIVITY}</option>
+								<option value="17" <if condition="$posts['said'] eq '17'">selected</if> >{$Think.lang.LINK_INTRODUCE_ACTIVITY}</option>
+								<option value="18" <if condition="$posts['said'] eq '18'">selected</if> >{$Think.lang.LINK_SKIN_ACTIVITY}</option>
+								<option value="19" <if condition="$posts['said'] eq '19'">selected</if> >{$Think.lang.OPEN_MAIL_ACTIVITY}</option>
+								<option value="20" <if condition="$posts['said'] eq '20'">selected</if> >{$Think.lang.DH_SHOP_ACTIVITY}</option>
+								<option value="21" <if condition="$posts['said'] eq '21'">selected</if> >{$Think.lang.PVE_COINEXP_UP_ACTIVITY}</option>
+								<option value="22" <if condition="$posts['said'] eq '22'">selected</if> >{$Think.lang.OLDROLE_BACK_ACTIVITY}</option>
+								<option value="23" <if condition="$posts['said'] eq '23'">selected</if> >{$Think.lang.NEWROLE_ENTER_ACTIVITY}</option>
+								<option value="24" <if condition="$posts['said'] eq '24'">selected</if> >{$Think.lang.LIMIT_PACK_ACTIVITY}</option>
+								<option value="25" <if condition="$posts['said'] eq '25'">selected</if> >{$Think.lang.ONE_DRAW}</option>
+								<option value="27" <if condition="$posts['said'] eq '27'">selected</if> >{$Think.lang.RAID_BOSS_ACTIVITY}</option>
+								<option value="28" <if condition="$posts['said'] eq '28'">selected</if> >{$Think.lang.XIULUO_SPECIAL__ACTIVITY}</option>
+								<option value="29" <if condition="$posts['said'] eq '29'">selected</if> >{$Think.lang.LUCKY_DRAW__ACTIVITY}</option>
+								<option value="30" <if condition="$posts['said'] eq '30'">selected</if> >{$Think.lang.TEN_DRAW_ACTIVITY}</option>
+								<option value="31" <if condition="$posts['said'] eq '31'">selected</if> >{$Think.lang.LABOR_DAY_ACTIVITY}</option>
+								<option value="32" <if condition="$posts['said'] eq '32'">selected</if> >{$Think.lang.RANK_REWARD_ACTIVITY}</option>
+								<option value="33" <if condition="$posts['said'] eq '33'">selected</if> >{$Think.lang.GOLDEN_WEEK}</option>
+								<option value="34" <if condition="$posts['said'] eq '34'">selected</if> >{$Think.lang.KINGPVP_WIN_ACTIVITY}</option>
+								<option value="35" <if condition="$posts['said'] eq '35'">selected</if> >{$Think.lang.WEEK_CHONGZHI_ACTIVITY}</option>
+								<option value="36" <if condition="$posts['said'] eq '36'">selected</if> >{$Think.lang.ONE_HOUR_ACTIVITY}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th width="80">{$Think.lang.START_TIME}</th>
+						<td> <input type="text" class="J_datetime" style="width:200px" name="startts" id="startts"  value="<?php echo !empty($posts['startts'])?$posts['startts']:date('Y-m-d H:i');?>" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" /><span style="color:red;">{$Think.lang.TAKE_CARE}</span></td>
+					</tr>
+					<tr>
+						<th width="80">{$Think.lang.END_TIME}</th>
+						<td> <input type="text" class="J_datetime" style="width:200px" name="endts" id="endts"  value="<?php echo !empty($posts['endts'])?$posts['endts']:date('Y-m-d H:i');?>" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" /></td>
+					</tr>
+					<tr id="Tired_and_tired">
+						<th width="80">{$Think.lang.ACCUMULATION_TYPE}</th>
+						<td>
+							{:form_select(array(1=>L('SINGLE_DAY_ACCUMULATION'),2=>L('MULTI_DAY_ACCUMULATION')),$posts['actvalue1'],'class="form-control form_check" check-type="Text" name="actvalue1" id="tired_type"')}
+
+						</td>
+					</tr>
+					<tr id="xiuluo">
+						<th width="80">{$Think.lang.EXCHANGE_TYPE}</th>
+						<td>
+							{:form_select(array(1=>L('XIULUO_COIN'),2=>L('BRAVE_EXCHANGE'),3=>L('ORDINARY_MAGATAMA')),$posts['actvalue1'],'class="form-control form_check" check-type="Text" name="actvalue1" id="actvalue1"')}
+
+						</td>
+					</tr>
+					<tr id="onehour">
+						<th width="80">{$Think.lang.ACTIVE_TYPE}</th>
+						<td>
+							{:form_select(array(1=>L('PVE_SPECIES'),2=>L('PVE_EXP'),3=>L('DROP_DOUBLE'),4=>L('KING_COMPETITIVE')),$posts['actvalue1'],'class="form-control form_check" check-type="Text" name="actvalue1" id="pve_onehour"')}
+						</td>
+					</tr>
+<!--					<tr id="partner">
+						<th width="80">{$Think.lang.BRAVE}</th>
+						<td>
+							<select id = "itemtype">
+								<option value = "16">{$Think.lang.BRAVE}</option>
+							</select>
+							<select class="form-control" id="itemlist" name="actvalue1">
+								<?php foreach ($item_info as $k => $v): ?>
+								<option value="<?php echo $posts['actvalue1']; ?>"><?php echo $v['name']; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>-->
+					<tr id="clear">
+						<th width="80">{$Think.lang.WIPE_DATA}</th>
+						<td><button type="button" class="btn btn-primary btn-lg" onClick="clearData();">{$Think.lang.ELIMINATE}</button><span style="color:red;margin-left:20px;">{$Think.lang.SUBMIT_CLEAR}</span></td>
+					</tr>
+					<tr id="clearraidboss">
+						<th width="80">{$Think.lang.WIPE_DATA}</th>
+						<td><button type="button" class="btn btn-primary btn-lg" onClick="clearraidboss();">{$Think.lang.ELIMINATE}</button><span style="color:red;margin-left:20px;">{$Think.lang.SUBMIT_CLEAR}</span></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-primary btn_submit J_ajax_submit_btn" type="submit" id="subt">{$Think.lang.SUBMIT}</button>
+			<a class="btn" href="javascript:history.go(-1)">{$Think.lang.RETURN}</a>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+<script>
+	/////---------------------
+	Wind.use('validate', 'ajaxForm', 'artDialog', function () {
+		var form = $('form.J_ajaxForms');
+		//ie处理placeholder提交问题
+		if ($.browser.msie) {
+			form.find('[placeholder]').each(function () {
+				var input = $(this);
+				if (input.val() == input.attr('placeholder')) {
+					input.val('');
+				}
+			});
+		}
+		//表单验证开始
+		form.validate({
+			//是否在获取焦点时验证
+			onfocusout:false,
+			//是否在敲击键盘时验证
+			onkeyup:false,
+			//当鼠标掉级时验证
+			onclick: false,
+			//验证错误
+			showErrors: function (errorMap, errorArr) {
+				//errorMap {'name':'错误信息'}
+				//errorArr [{'message':'错误信息',element:({})}]
+				try{
+					$(errorArr[0].element).focus();
+					art.dialog({
+						id:'error',
+						icon: 'error',
+						lock: true,
+						fixed: true,
+						background:"#CCCCCC",
+						opacity:0,
+						content: errorArr[0].message,
+						cancelVal: '确定',
+						cancel: function(){
+							$(errorArr[0].element).focus();
+						}
+					});
+				}catch(err){
+				}
+			},
+			highlight: false,
+			//是否在获取焦点时验证
+			onfocusout: false,
+			//验证通过，提交表单
+			submitHandler: function (forms) {
+				$(forms).ajaxSubmit({
+					url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+					dataType: 'json',
+					beforeSubmit: function (arr, $form, options) {
+
+					},
+					success: function (data, statusText, xhr, $form) {
+						if(data.status){
+							setCookie("refersh_time",1);
+							//添加成功
+							Wind.use("artDialog", function () {
+								art.dialog({
+									id: "succeed",
+									icon: "succeed",
+									fixed: true,
+									lock: true,
+									background: "#CCCCCC",
+									opacity: 0,
+									content: data.info,
+									button:[
+										{
+											name: '{$Think.lang.CONTINUE_TO_ADD}',
+											callback:function(){
+												reloadPage(window);
+												return true;
+											},
+											focus: true
+										}
+									]
+								});
+							});
+						}else{
+							isalert(data.info);
+						}
+					}
+				});
+			}
+		});
+	});
+	function getItemList(){
+		$.get("{:U('Operate/Email/get_item_json')}&itemType=" + $("#itemtype").val(),function(data){
+			var str = '';
+			if(data.Options){
+				for(var i = 0; i < data.Options.length; i++){
+					str += '<option value="'+data.Options[i].Value+'">(' + data.Options[i].Value + ')' + data.Options[i].DisplayText + '</option>';
+				}
+				$('#itemlist').html(str);
+
+			}
+		});
+	}
+	$(function () {
+		getItemList();
+		$("#itemtype").change(function(){
+			$('#itemlist').html('');
+			getItemList();
+		});
+		function showitem(){
+			var val = $("#said").val();
+			if (val == 2) {
+				$("#partner").show();
+				$("#itemlist").attr("disabled", false);
+			} else {
+				$("#partner").hide();
+				$("#itemlist").attr("disabled", true);
+			}
+		}
+
+		showitem();
+		$("#said").change(function () {
+			showitem();
+		});
+
+	});
+	function clearData(){
+		var serverid = $("#server_id").val();
+		if(confirm("{$Think.lang.CONFIRM_EMPTY}")){
+			$.post('{:U('ActiveConfiguration/clears')}&serverid='+serverid,function(data){
+				if(data > 0){
+					alert('{$Think.lang.SUCCESSFUL_OPERATION}');
+				}else{
+					alert('{$Think.lang.OPERATION_FAILED}');
+				}
+			});
+		}
+	}
+	function clearraidboss(){
+		var serverid = $("#server_id").val();
+		if(confirm("{$Think.lang.CONFIRM_EMPTY}")){
+			$.post('{:U('ActiveConfiguration/clearsraidboss')}&serverid='+serverid,function(data){
+				if(data > 0){
+					alert('{$Think.lang.SUCCESSFUL_OPERATION}');
+				}else{
+					alert('{$Think.lang.OPERATION_FAILED}');
+				}
+			});
+		}
+	}
+			function showitem() {
+				var val = $("#said").val();
+				if (val == 1) {
+					$("#xiuluo").show();
+					$("#clear").show();
+					$("#actvalue1").attr("disabled", false);
+				}else {
+					$("#xiuluo").hide();
+					$("#clear").hide();
+					$("#actvalue1").attr("disabled", true);
+				}
+				if(val == 27){
+					$("#clearraidboss").show();
+				}else {
+					$("#clearraidboss").hide();
+				}
+				if (val == 6 || val == 7) {
+					$("#Tired_and_tired").show();
+					$("#tired_type").attr("disabled", false);
+				} else {
+					$("#Tired_and_tired").hide();
+					$("#tired_type").attr("disabled", true);
+				}
+				if (val == 36) {
+					$("#onehour").show();
+					$("#pve_onehour").attr("disabled", false);
+				} else {
+					$("#onehour").hide();
+					$("#pve_onehour").attr("disabled", true);
+				}
+			}
+
+			$(function () {
+				showitem();
+				$("#said").change(function () {
+					showitem();
+				});
+			});
+			$('#subt').click(function () {
+				var val = $("#said").val();
+				var content = "{$Think.lang.PROMPT_BOX_INFORMATION}";
+				if (val == 1 || val == 27) {
+					if (confirm(content)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			});
+
+</script>
+</body>
+</html>
+

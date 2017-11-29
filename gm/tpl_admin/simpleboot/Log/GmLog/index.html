@@ -1,0 +1,73 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="javascript:;">{$Think.lang.USER_INFORMATION}</a></li>
+			<!--li><a href="{:U('AdminGameItems/add',array('gid'=>$gid))}" target="_self">添加游戏道具</a></li-->
+		</ul>
+		<form class="well form-search" method="post" action="">
+			<div class="search_type cc mb10">
+				<div class="mb10">
+					<span class="mr20">{$Think.lang.OPERATION_METHOD}：
+						{:form_select(gm_log_name(),I('action'),'class="form-control form_check" check-type="Text" name="action" id="action"')}
+									{$Think.lang.START_TIME}：
+						<input type="text" class="J_date" style="width:150px" name="start_time"  value="<?php echo I('start_time')?I('start_time'):date('Y-m-d',strtotime('-6 days'));?>" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" />
+						{$Think.lang.END_TIME}：
+						<input type="text" class="J_date" style="width:150px" name="end_time"    value="<?php echo I('end_time')?I('end_time'):date('Y-m-d',time());?>" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" />
+
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+				</div>
+			</div>
+		</form>
+		<form class="J_ajaxForm" action="" method="post">
+
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+				<tr>
+
+					<th width="50">{$Think.lang.ADMINISTRATORS}</th>
+					<th width="100">{$Think.lang.OPERATION_METHOD}</th>
+					<th width="150">{$Think.lang.OPERATION_CONTENT}</th>
+					<th>params</th>
+					<th width="120">{$Think.lang.OPERATION_IP}</th>
+					<th width="50">{$Think.lang.OPERATION_TIME}</th>
+
+				</tr>
+				</thead>
+
+				<foreach name="comments" item="vo">
+					<tr>
+
+						<td>{:get_admin_nickname($vo['user_id'])}</td>
+						<td>{:gm_log_name($vo['action'])}</td>
+						<td style="display:inline-block;width:600px;height:80px;word-wrap:break-word;word-break:break-all">{$vo.request}</td>
+						<td>{$vo.params}</td>
+						<td>{$vo.actionip}</td>
+						<td>{$vo.actiontime}</td>
+
+					</tr>
+				</foreach>
+				<tfoot>
+				<tr>
+
+					<th width="50">{$Think.lang.ADMINISTRATORS}</th>
+					<th width="100">{$Think.lang.OPERATION_METHOD}</th>
+					<th width="150">{$Think.lang.OPERATION_CONTENT}</th>
+					<th>params</th>
+					<th width="120">{$Think.lang.OPERATION_IP}</th>
+					<th width="50">{$Think.lang.OPERATION_TIME}</th>
+
+				</tr>
+				</tfoot>
+			</table>
+
+			<div class="pagination">{$Page}</div>
+		</form>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+	
+	
+
+</body>
+</html>

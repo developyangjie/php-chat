@@ -1,0 +1,59 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li><a href="{:U('Server/index')}" target="_self">{$Think.lang.SERVER_LIST}</a></li>
+		<li><a href="{:U('Server/add')}" target="_self">{$Think.lang.NEW_SERVER}</a></li>
+		<li><a href="{:U('Server/merge')}" target="_self">{$Think.lang.MERGE_SERVER}</a></li>
+		<li class="active"><a href="javascript:;">{$Think.lang.HOT_UPDATE}</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.VERSION_NUMBER}：
+						<input type="text" class=""  name="version" value="<?php echo I('version');?>" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.VERSION_NUMBER}" />
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+						<a href="{:U('Server/adds_patch')}" style="color:#fff;width:30px;"><button type="button" class="btn btn-primary">{$Think.lang.ADD}</button></a>
+					</span>
+			</div>
+		</div>
+	</form>
+   <form class="J_ajaxForm" action="" method="post">
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="5%">ID</th>
+				<th width="5%">{$Think.lang.VERSION_NUMBER}</th>
+				<th width="15%">{$Think.lang.SIZE}</th>
+				<th width="7%">{$Think.lang.OPERATION}</th>
+			</tr>
+			</thead>
+            <foreach name="post" item="vo">
+				<tr>
+
+					<td>{$vo.id}</td>
+					<td>{$vo.version}</td>
+					<td>{$vo.size}</td>
+					<td><a href="{:U('Server/edits',array('id'=>$vo['id']))}">{$Think.lang.EDIT_OPERATION}</a> |
+						<a href="{:U('Server/delete',array('id'=>$vo['id']))}" class="J_ajax_del">{$Think.lang.DELETE_OPERATION}</a>
+
+					</td>
+
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="5%">ID</th>
+				<th width="5%">{$Think.lang.VERSION_NUMBER}</th>
+				<th width="15%">{$Think.lang.SIZE}</th>
+				<th width="7%">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+	   <div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

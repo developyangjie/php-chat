@@ -1,0 +1,151 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">智能机器人列表</a></li>
+		<li><a href="{:U('LogRobotChat/add')}" target="_self">添加机能机器人</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">选择区服：
+						{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"','-选择区服-')}
+						<input type="submit" class="btn btn-primary" value="搜索" />
+					</span>
+			</div>
+		</div>
+	</form>
+
+	<form class="J_ajaxForm" action="" method="post">
+		<table class="table table-hover table-bordered table-list" id="menus-table-1">
+			<thead>
+			<tr>
+				<th width="50">玩家名称</th>
+				<th width="50">职业</th>
+				<th width="50">VIP等级</th>
+				<th width="50">称号</th>
+				<th width="50">聊天内容</th>
+				<th width="50">是否循环</th>
+				<th width="50">操作</th>
+			</tr>
+			</thead>
+			<foreach name="posts" item="vo">
+				<tr>
+					<td>{$vo.uname}</td>
+					<td>{:get_ujob_name($vo['ujob'])}</td>
+					<td>{$vo.uvip}</td>
+					<td>{:get_utitle_name($vo['utitle'])}</td>
+					<td>{$vo.msg}</td>
+					<td>
+						<if condition="$vo.flag eq 1">是<else />否</if>
+					</td>
+					<td><a href="{:U('LogRobotChat/edit',array('server_id'=>I('server_id'),'id'=>$vo['id']))}">修改</a> | <a href="{:U('LogRobotChat/delete',array('server_id'=>I('server_id'),'id'=>$vo['id']))}" class="J_ajax_del">删除</a></td>
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="50">玩家名称</th>
+				<th width="50">职业</th>
+				<th width="50">VIP等级</th>
+				<th width="50">称号</th>
+				<th width="50">聊天内容</th>
+				<th width="50">是否循环</th>
+				<th width="50">操作</th>
+			</tr>
+			</tfoot>
+		</table>
+		<div id="page" class="pagination"></div>
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script src="__ROOT__/statics/js/jQuery.pager/pager.js"></script>
+<script src="__ROOT__/statics/js/jQuery.pager/pager.min.js"></script>
+<script>
+	new $.pager({
+		count:<?php echo $count;?>,    //总数据条数
+		nums:20,    //每页显示的数据条数，默认是20条可以省略
+		pageContainer:'#page',
+		onchange:function(){
+		this.hide(); //隐藏分页条
+
+		var data = {$posts_json};
+		var page= this.page;
+		var num = this.nums;
+
+		var str = '<table class="table table-hover table-bordered table-list" id="menus-table-1">';
+		str +='<thead>';
+		str +='<tr>';
+		str +='<th width="50">玩家名称</th>';
+		str +='<th width="50">职业</th>';
+		str +='<th width="50">VIP等级</th>';
+		str +='<th width="50">称号</th>';
+		str +='<th width="50">聊天内容</th>';
+		str +='<th width="50">是否循环</th>';
+		str +='<th width="50">操作</th>';
+		str += '</tr>';
+		str +='</thead>';
+
+
+		$.each(data, function(key,val){
+			if(key>(page-1)*num-1 && key<page*num){
+				str +='<tr>';
+				str +='<td>'+val.uname+'</td>';
+				str +='<td>'+get_ujob_name(val.ujob)+'</td>';
+				str +='<td>'+val.uvip+'</td>';
+				str +='<td>'+get_utitle_name(val.utitle)+'</td>';
+				str +='<td>'+val.msg+'</td>';
+				if(val.flag==1){
+					str +='<td>是</td>';
+				}else{
+					str +='<td>否</td>';
+				}
+				str +='<td><a href="<?php echo U('LogRobotChat/edit');?>&server_id='+<?php echo I('server_id');?>+'&id='+val.id+'">修改</a> | <a href="<?php echo U('LogRobotChat/delete');?>&server_id='+<?php echo I('server_id');?>+'&id='+val.id+'">删除</a></td>';
+				str +='</tr>';
+			}
+
+		});
+		str +='<tfoot>';
+		str +='<tr>';
+		str +='<th width="50">玩家名称</th>';
+		str +='<th width="50">职业</th>';
+		str +='<th width="50">VIP等级</th>';
+		str +='<th width="50">称号</th>';
+		str +='<th width="50">聊天内容</th>';
+		str +='<th width="50">是否循环</th>';
+		str +='<th width="50">操作</th>';
+		str += '</tr>';
+		str +='</tfoot>';
+		str +='</table>';
+
+		$("#menus-table-1").html(str);
+
+		//假设你跳转到第5页时发现，处理失败，需要显示上一页时
+		//加入下面代码后，这个示例永远不会跳转到第5页
+		if(this.page == 20){
+			this.page--;   //返回之前的页码，也可以跳转到其他页码
+			this.reload(); //重新加载分页条
+		}
+		this.show();//显示分页条
+	}
+	});
+	function get_ujob_name(find){
+		var arr = new Array();
+		arr[1] ='战士';
+		arr[2] ='弓箭手';
+		arr[3] ='策士';
+		if(find){
+			return arr[find];
+		}
+		return arr;
+	}
+	function get_utitle_name(find){
+		var arr = <?php echo json_encode(get_utitle_name());?>;
+		    if(find){
+				return arr[find];
+			}
+		    return arr;
+
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">{$Think.lang.SERVER_LIST}</a></li>
+		<li><a href="{:U('Server/add')}" target="_self">{$Think.lang.NEW_SERVER}</a></li>
+		<li><a href="{:U('Server/merge')}" target="_self">{$Think.lang.MERGE_SERVER}</a></li>
+		<li><a href="{:U('Server/server_patch')}" target="_self">{$Think.lang.HOT_UPDATE}</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.SERVER_NAME}：
+						<input type="text" class=""  name="name" value="<?php echo I('name');?>" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.SERVER_NAME}" />
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+			</div>
+		</div>
+	</form>
+   <form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="5%">{$Think.lang.SERVER_ID}</th>
+				<th width="4%">{$Think.lang.SORT}</th>
+				<th width="5%">{$Think.lang.SERVER_NAME}</th>
+				<th width="10%">{$Think.lang.ENTRABCE}</th>
+				<th width="5%">{$Think.lang.CLIENT_VERSION_NUMBER}</th>
+				<th width="10%">{$Think.lang.OPENING_HOURS}</th>
+				<th width="7%">{$Think.lang.CHAT_SERVER_IP}</th>
+				<th width="5%">{$Think.lang.CHAT_SERVER_PORT}</th>
+				<th width="6%">{$Think.lang.CHAT_SERVER_REDIS_IP}</th>
+				<th width="5%">{$Think.lang.REDIS_PORT}</th>
+				<th width="7%">{$Think.lang.REDIS_PASS}</th>
+				<th width="5%">{$Think.lang.SERVER_STATUS}</th>
+				<th width="5%">{$Think.lang.UPDATE_PACKAGE_SIZE}</th>
+				<th width="5%">{$Think.lang.HARMONIOUS_STATE}</th>
+				<th width="5%">{$Think.lang.GOOGLE_STORE_VERSION_NUMBER}</th>
+				<th width="5%">{$Think.lang.IOS_STORE_VERSION_NUMBER}</th>
+				<th width="7%">{$Think.lang.OPERATION}</th>
+			</tr>
+			</thead>
+            <foreach name="posts" item="vo">
+				<tr>
+
+					<td>{$vo.id}</td>
+					<td>{$vo.orderby}</td>
+					<td>{$vo.name}</td>
+					<td>{$vo.ip}</td>
+					<td>{$vo.version}</td>
+					<td>{$vo.opentime}</td>
+					<td>{$vo.chatip}</td>
+					<td>{$vo.chatport}</td>
+					<td>{$vo.chatredisip}</td>
+					<td>{$vo.chatredisport}</td>
+					<td>{$vo.chatredisauth}</td>
+					<td><if condition="$vo.type eq 0"><span style="color:green;">{$Think.lang.OPEN_START}</span><elseif condition="$vo.type eq 1"/><span style="color:red;">{$Think.lang.HOT}</span><elseif condition="$vo.type eq 2"/><span style="color:#888888;">{$Think.lang.MAINTAIN}</span><else/><span style="color:#000">{$Think.lang.INTERNAL_TESTING}</span></if></td>
+					<td>{$vo.patchsize}</td>
+					<td><if condition="$vo.showoff eq 0"><span style="color:green;">{$Think.lang.AUTOMATIC}</span><elseif condition="$vo.showoff eq 1"/><span style="color:red;">{$Think.lang.COMPULSORY_HARMONY}</span><else/><span style="color:#000">{$Think.lang.FORCED_DISHARMONY}</span></if></td>
+					<td>{$vo.state}</td>
+					<td>{$vo.stateios}</td>
+					<td><a href="{:U('Server/edit',array('id'=>$vo['id']))}">{$Think.lang.EDIT_OPERATION}</a></td>
+
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="5%">{$Think.lang.SERVER_ID}</th>
+				<th width="4%">{$Think.lang.SORT}</th>
+				<th width="5%">{$Think.lang.SERVER_NAME}</th>
+				<th width="10%">{$Think.lang.ENTRABCE}</th>
+				<th width="5%">{$Think.lang.CLIENT_VERSION_NUMBER}</th>
+				<th width="10%">{$Think.lang.OPENING_HOURS}</th>
+				<th width="7%">{$Think.lang.CHAT_SERVER_IP}</th>
+				<th width="5%">{$Think.lang.CHAT_SERVER_PORT}</th>
+				<th width="6%">{$Think.lang.CHAT_SERVER_REDIS_IP}</th>
+				<th width="5%">{$Think.lang.REDIS_PORT}</th>
+				<th width="7%">{$Think.lang.REDIS_PASS}</th>
+				<th width="5%">{$Think.lang.SERVER_STATUS}</th>
+				<th width="5%">{$Think.lang.UPDATE_PACKAGE_SIZE}</th>
+				<th width="5%">{$Think.lang.HARMONIOUS_STATE}</th>
+				<th width="5%">{$Think.lang.GOOGLE_STORE_VERSION_NUMBER}</th>
+				<th width="5%">{$Think.lang.IOS_STORE_VERSION_NUMBER}</th>
+				<th width="7%">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+	   <div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

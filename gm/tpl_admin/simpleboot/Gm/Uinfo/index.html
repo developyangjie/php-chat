@@ -1,0 +1,82 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">{$Think.lang.PLAYER_MANAGEMENT}</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+						{$Think.lang.PLAYER_UID}:
+						<input type="number" name="uid" style="width: 200px;" value="{$posts.uid}" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.PLAYER_UID}">
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="50">UID</th>
+				<th width="50">{$Think.lang.ROLE_NAME}</th>
+				<th width="50">{$Think.lang.CLOSURE_REASON}</th>
+				<th width="50">{$Think.lang.CLOSURE_TIME}</th>
+				<th width="50">{$Think.lang.OPERATION}</th>
+
+			</tr>
+			</thead>
+
+               <?php if(!empty($posts)):?>
+				<tr>
+
+					<td>{$posts.uid}</td>
+					<td>{$posts.uname}</td>
+
+					<td>{$posts.forbidreason}</td>
+					<td>
+					<?php if(!empty($posts['forbidtime'])):?>
+					{$posts.forbidtime}
+					<?php endif;?>
+					</td>
+					
+					<td>
+						<if condition="$posts.isspeak eq 1">
+						<a href="{:U('Uinfo/Lift_a_ban',array('uid'=>$posts['uid'],'serverid'=>I('server_id')))}" class="btn btn-primary">{$Think.lang.BAN}</a>
+						<else />
+						<a class="btn btn-danger" href="{:U('Uinfo/Gag',array('uid'=>$posts['uid'],'serverid'=>I('server_id')))}" class="btn btn-primary">{$Think.lang.GAG}</a>
+						</if>
+					   <if condition="$posts.forbid eq 1">
+					   <a href="{:U('Uinfo/enable',array('uid'=>$posts['uid'],'serverid'=>I('server_id')))}" class="btn btn-primary">{$Think.lang.LIFTED}</a>
+					   <else />
+					   <a class="btn btn-danger" href="{:U('Uinfo/disable',array('uid'=>$posts['uid'],'serverid'=>I('server_id')))}">{$Think.lang.CLOSURE}</a>
+					   </if>
+						<if condition="$posts.iskick eq 1">
+							<a href="{:U('Uinfo/kick_away',array('uid'=>$posts['uid'],'serverid'=>I('server_id')))}" class="btn btn-danger">{$Think.lang.OFFLINE}</a>
+							<else />
+							<a class="btn" href="#" style="color: gray" disabled=true>{$Think.lang.OFF_LINE}</a>
+						</if>
+					</td>
+				</tr>
+               <?php endif;?>
+			<tfoot>
+			<tr>
+				<th width="50">UID</th>
+				<th width="50">{$Think.lang.ROLE_NAME}</th>
+				<th width="50">{$Think.lang.CLOSURE_REASON}</th>
+				<th width="50">{$Think.lang.CLOSURE_TIME}</th>
+				<th width="50">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+
+		<div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

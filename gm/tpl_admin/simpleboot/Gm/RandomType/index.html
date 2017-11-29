@@ -1,0 +1,60 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">{$Think.lang.PROBABILITY_TABLE_CONFIGURATION}</a></li>
+		<li><a href="{:U('RandomType/add',array('serverid'=>$serverid))}" target="_self">{$Think.lang.ADD_PROBABILITY_TABLE_CONFIGURATION}</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+			</div>
+		</div>
+	</form>
+   <form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="100">ID</th>
+				<th width="100">{$Think.lang.TYPE}</th>
+				<th width="100">{$Think.lang.RANDOM_RATE_NAME}</th>
+				<th width="100">{$Think.lang.RANDOM_FUNCTION_TYPE_ID}</th>
+				<th width="100">{$Think.lang.RANDOM_RATE_ARRAY}</th>
+				<th width="100">{$Think.lang.OPERATION}</th>
+			</tr>
+			</thead>
+			
+            <foreach name="posts"  item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.type}</td>
+					<td>{$vo.name}</td>
+					<td>{$vo.subtype}</td>
+					<td>{$vo.probability}</td>
+					<td><a href="{:U('RandomType/edit',array('id'=>$vo['id'],'serverid'=>$serverid))}">{$Think.lang.EDIT_OPERATION}</a> |
+						<a href="{:U('RandomType/delete',array('id'=>$vo['id'],'serverid'=>$serverid))}">{$Think.lang.DELETE_OPERATION}</a></td>
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="100">ID</th>
+				<th width="100">{$Think.lang.TYPE}</th>
+				<th width="100">{$Think.lang.RANDOM_RATE_NAME}</th>
+				<th width="100">{$Think.lang.RANDOM_FUNCTION_TYPE_ID}</th>
+				<th width="100">{$Think.lang.RANDOM_RATE_ARRAY}</th>
+				<th width="100">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+	   <div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

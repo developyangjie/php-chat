@@ -1,0 +1,64 @@
+<admintpl file="header" />
+</head>
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('menu/index')}">{$Think.lang.BACKGROUND_MENU}</a></li>
+			<li><a href="{:U('menu/add')}">{$Think.lang.ADD_MENU}</a></li>
+			<if condition="APP_DEBUG">
+			<li><a href="{:U('menu/spmy_import_menu')}">{$Think.lang.IMPORT_MENU}</a></li>
+			<li class="active"><a href="{:U('menu/lists')}">{$Think.lang.ALL_MENU}</a></li>
+			<li><a href="{:U('menu/spmy_export_menu')}">{$Think.lang.BACKUP_MENU}</a></li>
+			</if>
+		</ul>
+		<form class="form-horizontal J_ajaxForm" action="{:U('Menu/listorders')}" method="post">
+			<div class="table-actions">
+				<button class="btn btn-primary btn-small btn_submit J_ajax_submit_btn" type="submit">{$Think.lang.SORT}</button>
+				<a class="btn btn-primary btn-small" type="submit" href="{:u('menu/spmy_getactions')}">{$Think.lang.IMPORT_MENU}</a>
+			</div>
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<th width="50">{$Think.lang.SORT}</th>
+						<th width="50">ID</th>
+						<th>{$Think.lang.MENU_ENGLISH_NAME}</th>
+						<th width="40">{$Think.lang.ROLE_STATE}</th>
+						<th width="80">{$Think.lang.MANAGEMENT_OPERATION}</th>
+					</tr>
+				</thead>
+				<foreach name="menus" item="vo">
+				<tr>
+					<td><input name="listorders[{$vo.id}]" type="text" size="3" value="{$vo.listorder}" class="input input-order"></td>
+					<td>{$vo.id}</td>
+					<td>{$vo.name}:{$vo.app}/{$vo.model}/{$vo.action}</td>
+					<td>
+					<if condition="$vo['status'] eq 1">
+						{$Think.lang.DISPLAY}
+					<else />
+						{$Think.lang.HIDE}
+					</if>
+					</td>
+					<td>
+						<a href="{:u('menu/edit',array('id'=>$vo['id']))}">{$Think.lang.EDIT_OPERATION}</a> |
+						<a class="J_ajax_del" href="{:u('menu/delete',array('id'=>$vo['id']))}">{$Think.lang.DELETE_OPERATION}</a>
+					</td>
+				</tr>
+				</foreach>
+				<tfoot>
+					<tr>
+						<th width="50">{$Think.lang.SORT}</th>
+						<th width="50">ID</th>
+						<th>{$Think.lang.MENU_ENGLISH_NAME}</th>
+						<th width="40">{$Think.lang.ROLE_STATE}</th>
+						<th width="80">{$Think.lang.MANAGEMENT_OPERATION}</th>
+					</tr>
+				</tfoot>
+			</table>
+			<div class="table-actions">
+				<button class="btn btn-primary btn-small btn_submit J_ajax_submit_btn" type="submit">{$Think.lang.SORT}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

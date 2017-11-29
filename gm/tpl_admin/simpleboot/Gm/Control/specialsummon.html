@@ -1,0 +1,222 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:U('Control/index')}">{$Think.lang.CARD_DARK_CONTROL}</a></li>
+        <li class="active"><a href="{:U('Control/specialsummon')}" target="_self">{$Think.lang.SPECIAL_SUMMON}</a></li>
+        <li><a href="{:U('Control/oftenopen')}">{$Think.lang.NORMALLY_OPEN}</a></li>
+        <li><a href="{:U('Control/cardwarehouse')}" target="_self">{$Think.lang.CARD_WAREHOUSE}</a></li>
+    </ul>
+    <form class="well form-search" method="post" action="">
+        <div class="search_type cc mb10">
+            <div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),$serverid,'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+            </div>
+        </div>
+    </form>
+    <if condition="$serverid neq ''">
+        <form name="myform" id="myform" action="" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+            <input type="hidden" name="serverid" value="{$serverid}">
+            <table class="table table-hover table-bordered table-list">
+                <foreach name="post" item="vo">
+                    <tr>
+                        <th width="80">{$Think.lang.SWITCH}</th>
+                        <td>{:form_radio(array(0=>L('CLOSE'),1=>L('OPEN_START')),$vo['switch'],'class="form-control form_check" style="" check-type="Text" name="switch" id="switch"')}
+                        <button type="submit">{$Think.lang.SUBMIT}</button>
+                        </td>
+                    </tr>
+                </foreach>
+            </table>
+        </form>
+        <table class="table table-hover table-bordered table-list" style="margin-bottom:20px">
+
+            <tr>
+                <th width="80">{$Think.lang.PLAYERS_RECHARGE_CLEARED}</th>
+                <td><button onclick="location.href='{:U('Control/update_udrawforpay',array('serverid'=>$serverid))}'" class="delect_blog_sort" style="margin-left:10px;">{$Think.lang.CLEARED}</button></td>
+            </tr>
+
+        </table>
+    </if>
+    <form class="J_ajaxForm" action="" method="post">
+
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+                <th width="100">ID</th>
+                <th width="100">{$Think.lang.AMOUNT_OF_MONEY}</th>
+                <th width="100">{$Think.lang.EXTRACT_WAREHOUSE_ID}</th>
+                <th width="100">{$Think.lang.SPECIAL_SUMMON_TIMES}</th>
+                <th width="100">{$Think.lang.OPERATION}</th>
+            </tr>
+            </thead>
+
+            <foreach name="posts"  item="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.money}</td>
+                    <td>{$vo.gid}</td>
+                    <td>{$vo.times}</td>
+                    <td><a href="{:U('Control/sysdt_edit',array('id'=>$vo['id'],'serverid'=>$serverid))}">{$Think.lang.EDIT_OPERATION}</a></td>
+                </tr>
+            </foreach>
+            <tfoot>
+            <tr>
+                <th width="100">ID</th>
+                <th width="100">{$Think.lang.AMOUNT_OF_MONEY}</th>
+                <th width="100">{$Think.lang.EXTRACT_WAREHOUSE_ID}</th>
+                <th width="100">{$Think.lang.SPECIAL_SUMMON_TIMES}</th>
+                <th width="100">{$Think.lang.OPERATION}</th>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="pagination">{$Page}</div>
+
+    </form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>
+<script>
+    $(function(){
+        $(".delect_blog_sort").click(function(){
+            return confirm("{$Think.lang.WHETHER_TO_CONFIRM_CLEARED}");
+        });
+    });
+    $('#myform').submit(function(e){
+        $.post('{:U('Control/switchoff',array('serverid'=>$serverid))}', $(this).serialize(),function(data){
+            if(data > 0){
+                alert('{$Think.lang.SUCCESSFUL_OPERATION}');
+            }else{
+                alert('{$Think.lang.OPERATION_FAILED}');
+            }
+        });
+        e.preventDefault();
+    });
+</script>
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+
+<script type="text/javascript" src="__ROOT__/statics/js/content_addtop.js"></script><script type="text/javascript">
+    $(function () {
+
+        //setInterval(function(){public_lock_renewal();}, 10000);
+        $(".J_ajax_close_btn").on('click', function (e) {
+            e.preventDefault();
+            Wind.use("artDialog", function () {
+                art.dialog({
+                    id: "question",
+                    icon: "question",
+                    fixed: true,
+                    lock: true,
+                    background: "#CCCCCC",
+                    opacity: 0,
+                    content: "您确定需要关闭当前页面嘛？",
+                    ok:function(){
+                        setCookie("refersh_time",1);
+                        window.close();
+                        return true;
+                    }
+                });
+            });
+        });
+        /////---------------------
+        Wind.use('validate', 'ajaxForm', 'artDialog', function () {
+
+            var form = $('form.J_ajaxForms');
+            //ie处理placeholder提交问题
+            if ($.browser.msie) {
+                form.find('[placeholder]').each(function () {
+                    var input = $(this);
+                    if (input.val() == input.attr('placeholder')) {
+                        input.val('');
+                    }
+                });
+            }
+            //表单验证开始
+            form.validate({
+                //是否在获取焦点时验证
+                onfocusout:false,
+                //是否在敲击键盘时验证
+                onkeyup:false,
+                //当鼠标掉级时验证
+                onclick: false,
+                //验证错误
+                showErrors: function (errorMap, errorArr) {
+                    //errorMap {'name':'错误信息'}
+                    //errorArr [{'message':'错误信息',element:({})}]
+                    try{
+                        $(errorArr[0].element).focus();
+                        art.dialog({
+                            id:'error',
+                            icon: 'error',
+                            lock: true,
+                            fixed: true,
+                            background:"#CCCCCC",
+                            opacity:0,
+                            content: errorArr[0].message,
+                            cancelVal: '确定',
+                            cancel: function(){
+                                $(errorArr[0].element).focus();
+                            }
+                        });
+                    }catch(err){
+                    }
+                },
+                //验证规则
+
+                //给未通过验证的元素加效果,闪烁等
+                highlight: false,
+                //是否在获取焦点时验证
+                onfocusout: false,
+                //验证通过，提交表单
+                submitHandler: function (forms) {
+                    $(forms).ajaxSubmit({
+                        url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+                        dataType: 'json',
+                        beforeSubmit: function (arr, $form, options) {
+
+                        },
+                        success: function (data, statusText, xhr, $form) {
+                            if(data.status){
+                                setCookie("refersh_time",1);
+                                //添加成功
+                                Wind.use("artDialog", function () {
+                                    art.dialog({
+                                        id: "succeed",
+                                        icon: "succeed",
+                                        fixed: true,
+                                        lock: true,
+                                        background: "#CCCCCC",
+                                        opacity: 0,
+                                        content: data.info,
+                                        button:[
+                                            {
+                                                name: '{$Think.lang.CONTINUE_TO_EDIT}',
+                                                callback:function(){
+                                                    reloadPage(window);
+                                                    return true;
+                                                },
+                                                focus: true
+                                            },{
+                                                name: '{$Think.lang.RETURN_LIST_PAGE}',
+                                                callback:function(){
+                                                    location='{:U('Control/specialsummon')}';
+                                                    return true;
+                                                }
+                                            }
+                                        ]
+                                    });
+                                });
+                            }else{
+                                isalert(data.info);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        ////-------------------------
+    });
+</script>

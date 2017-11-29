@@ -1,0 +1,172 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">公告列表</a></li>
+		<li><a href="{:U('Notice/add')}" target="_self">新增公告</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">选择区服：
+						{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+						公告ID:<input type="number" name="id" style="width: 200px;" value="<?php echo I('id');?>" placeholder="输入玩家UID">
+						<input type="submit" class="btn btn-primary" value="搜索" />
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list" id="menus-table-1">
+			<thead>
+			<tr>
+				<th width="50">公告ID</th>
+				<th width="50">公告内容</th>
+				<th width="50">开始时间</th>
+				<th width="50">结束时间</th>
+				<th width="50">状态</th>
+				<th width="50">操作</th>
+			</tr>
+			</thead>
+			<?php
+			   $posts = array_slice($posts,0,20);
+			?>
+            <foreach name="posts" item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td style="max-width: 400px;">{$vo.news}</td>
+					<td>{$vo.startts|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.endts|date="Y-m-d H:i:s",###}</td>
+					<td>
+						<notempty name="vo.endts">
+							<?php if($vo['startts']<time() && $vo['endts']>time()):?>
+							<span class="btn btn-success">正在进行</span>
+							<?php elseif($vo['startts']>time()):?>
+							<span class="btn btn-warning">未进行</span>
+							<?php else:?>
+							<span class="btn btn-danger">已失效</span>
+							<?php endif;?>
+							<else />
+							<span class="btn btn-info">永久有效</span>
+						</notempty>
+					</td>
+					<td>
+						<a href="{:U('Notice/edit',array('id'=>$vo['id'],'serverid'=>I('server_id')))}">修改</a>
+
+					</td>
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="50">公告ID</th>
+				<th width="50">公告内容</th>
+				<th width="50">开始时间</th>
+				<th width="50">结束时间</th>
+				<th width="50">状态</th>
+				<th width="50">操作</th>
+			</tr>
+			</tfoot>
+		</table>
+		<div id="page" class="pagination"></div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script src="__ROOT__/statics/js/jQuery.pager/pager.js"></script>
+<script src="__ROOT__/statics/js/jQuery.pager/pager.min.js"></script>
+<script>
+	<?php if(isset($serverids)):?>
+	new $.pager({
+		count:<?php echo $count;?>,    //总数据条数
+		nums:20,    //每页显示的数据条数，默认是20条可以省略
+		pageContainer:'#page',
+		onchange:function(){
+		this.hide(); //隐藏分页条
+
+		var data = {$posts_json};
+		var page= this.page;
+		var num = this.nums;
+
+		var str = '<table class="table table-hover table-bordered table-list" id="menus-table-1">';
+		str +='<thead>';
+		str +='<tr>';
+
+		//str +='<th width="50">活动ID</th> <th width="50">活动名称</th> <th width="50">活动周期</th> <th width="50">等级限制</th> <th width="50">活动说明</th> <th width="50">开始时间</th> <th width="50">结束时间</th> <th width="50">奖励物品</th> <th width="50">操作</th>';
+		str +='<th width="50">公告ID</th> <th width="50">公告内容</th> <th width="50">开始时间</th> <th width="50">结束时间</th> <th width="50">状态</th> <th width="50">操作</th>';
+
+		str += '</tr>';
+		str +='</thead>';
+        var	 now_time = new Date().getTime();
+		     now_time = parseInt(now_time.toString().substring(0,10));
+
+
+		$.each(data, function(key,val){
+			if(key>(page-1)*num-1 && key<page*num){
+				str +='<tr>';
+				str +='<td>'+val.id+'</td>';
+				str +='<td style="max-width:400px;">'+val.news+'</td>';
+				str +='<td>'+formatDate(val.startts)+'</td>';
+				str +='<td>'+formatDate(val.endts)+'</td>';
+				if(val.endts !=''){
+					if(val.startts<now_time && val.endts>now_time){
+						str +='<td><span class="btn btn-success">正在进行</span></td>';
+					}else if(val.startts>now_time){
+						str +='<td><span class="btn btn-warning">未进行</span></td>';
+					}else{
+						str +='<td><span class="btn btn-danger">已失效</span></td>';
+					}
+				}else{
+					str +='<td><span class="btn btn-info">永久有效</span></td>';
+				}
+
+				str +='<td><a href="<?php echo U('Notice/edit');?>&id='+val.id+'&serverid=<?php echo I('server_id');?>">修改</a></td>';
+				str +='</tr>';
+			}
+
+		});
+		str +='<tfoot>';
+		str +='<tr>';
+		str +='<th width="50">公告ID</th> <th width="50">公告内容</th> <th width="50">开始时间</th> <th width="50">结束时间</th> <th width="50">状态</th> <th width="50">操作</th>';
+		str += '</tr>';
+		str +='</tfoot>';
+		str +='</table>';
+
+		$("#menus-table-1").html(str);
+
+		//假设你跳转到第5页时发现，处理失败，需要显示上一页时
+		//加入下面代码后，这个示例永远不会跳转到第5页
+		if(this.page == 20){
+			this.page--;   //返回之前的页码，也可以跳转到其他页码
+			this.reload(); //重新加载分页条
+		}
+		this.show();//显示分页条
+	}
+	});
+
+	//时间转换
+	function   formatDate(now)   {
+		var   now= new Date(now*1000);
+		var   year=now.getFullYear();
+		var   month=now.getMonth()+1;
+		var   date=now.getDate();
+		var   hour=now.getHours();
+		var   minute=now.getMinutes();
+		var   second=now.getSeconds();
+		return   year+"-"+fixZero(month,2)+"-"+fixZero(date,2)+" "+fixZero(hour,2)+":"+fixZero(minute,2)+":"+fixZero(second,2);
+	}
+		 //时间如果为单位数补0
+		 function fixZero(num,length){
+			 var str=""+num;
+			 var len=str.length;
+			 var s="";
+			 for(var i=length;i-->len;){
+				 s+="0";
+			 }
+			 return s+str;
+		 }
+	<?php endif;?>
+</script>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="javascript:;">{$Think.lang.PACKAGE_CODE_LIST}</a></li>
+			<li><a href="{:U('PackageType/add')}" target="_self">{$Think.lang.NEW_PACKAGE_CODE}</a></li>
+		</ul>
+		<form class="well form-search" method="post" action="">
+			<div class="search_type cc mb10">
+				<div class="mb10">
+					<span class="mr20">{$Think.lang.PACKAGE_NAME}：
+						<input type="text" name="title" style="width: 200px;" value="<?php echo I('title');?>" placeholder="{$Think.lang.PLEASE_INPUT}{$Think.lang.PACKAGE_NAME}">
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+				</div>
+			</div>
+		</form>
+		<form class="J_ajaxForm" action="" method="post">
+			
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<th width="50">{$Think.lang.PREFIX}</th>
+						<th width="50">{$Think.lang.NAME}</th>
+						<th width="50">{$Think.lang.CONTENT}</th>
+						<th width="200">{$Think.lang.PRIZE_QUANTITY}</th>
+						<th width="200">{$Think.lang.ENTRY_INTO_FORCE_TIME}</th>
+						<th width="200">{$Think.lang.TOTAL_QUANTITY}</th>
+
+						<th width="300">{$Think.lang.OPERATION}</th>
+					</tr>
+				</thead>
+				<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo.code_pre}</td>
+						<td>{$vo.title}</td>
+						<td>{$vo.content}</td>
+						<td>
+
+							<?php foreach(json_decode($vo['itemids'],true) as $item):?>
+							<?php echo getItemById($item['itemid'])['name'].'，'.L('ITEM_NUMBER').'：'.$item['num'].'<br/>';?>
+							<?php endforeach;?>
+						</td>
+						<td>
+							{$vo.start_time|date="Y-m-d H:s",###} - {$vo.end_time|date="Y-m-d H:s",###}
+						</td>
+						<td>{$vo.code_num}</td>
+
+						<td id="td">
+							<if condition="$vo.status eq 0"><button type="button" class="btn btn-primary btn-lg button-type"  onclick="Server.synMoreServerDialog({$vo.id});">
+								<span style="color:#fff;">{$Think.lang.DISTRIBUTE_TO_SERVER}</span></button></if>
+							<a  class="btn btn-success btn-lg" href="{:U('PackageType/export_excel',array('id'=>$vo['id']))}">{$Think.lang.DERIVED_EXCEL}</a>
+							<if condition="$vo.status eq 0"><a  class="btn btn-primary btn-lg" href="{:U('PackageType/edit',array('id'=>$vo['id']))}">{$Think.lang.EDIT_OPERATION}</a></if>
+						</td>
+					</tr>
+				</foreach>
+				<tfoot>
+				<tr>
+					<th width="50">{$Think.lang.PREFIX}</th>
+					<th width="50">{$Think.lang.NAME}</th>
+					<th width="50">{$Think.lang.CONTENT}</th>
+					<th width="200">{$Think.lang.PRIZE_QUANTITY}</th>
+					<th width="200">{$Think.lang.ENTRY_INTO_FORCE_TIME}</th>
+					<th width="200">{$Think.lang.TOTAL_QUANTITY}</th>
+
+					<th width="300">{$Think.lang.OPERATION}</th>
+				</tr>
+				</tfoot>
+			</table>
+		</form>
+	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog eventDialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel"></h4>
+				</div>
+				<div class="modal-body" id="ajaxContent">
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="submitClose" class="btn btn-default" data-dismiss="modal">{$Think.lang.CLOSE}</button>
+					<button id="submitMyModal" type="button" class="btn btn-primary">{$Think.lang.PRESERVATION}</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<script src="__ROOT__/statics/js/common.js"></script>
+    <script>
+		Server = {
+			//服务器状态批量修改弹出框
+			synMoreServerDialog: function(obg) {
+				$.post("<?php echo U('PackageType/distribution_server');?>",{ id:obg},
+						function(data) {
+							alert(data);
+							$("#td .button-type").loading('stop');
+							window.location.reload();
+						});
+			}
+		};
+		$("#td .button-type").click(function(){
+			$(this).loading();
+		});
+		(function ($) {
+			if (window.loading) {
+				return;
+			}
+			/**
+			 * 正在提交效果
+			 * 调用方法
+			 * var load=new loading($('#save'));  //正在提交
+			 * load.clear();                      //提交完成停止
+			 * @param {type} $obj  绑定操作的jquery对象,例子:$('#save')
+			 * @param {type} text  显示文件,默认'提交中'
+			 * @param {type} num   点的个数,默认3个
+			 * @param {type} rate  频率,默认1000ms
+			 * @returns {undefined}
+			 */
+			function loading($obj, text, num, rate, style) {
+				if (!($obj instanceof $) || $obj.length == 0) {
+					this.$obj = $('');
+					return this;
+				} else if ($obj.length > 1) {
+					$obj = $($obj[0]);
+				}
+				var exists = $obj.data('loading');
+				if (exists && exists instanceof loading) {
+					//如果存在则清除之前的操作
+					exists.clear();
+				}
+				this.$obj = $obj;
+				this.oldvalue = $obj.text();
+				this.num = $.isNumeric(parseInt(num)) ? parseInt(num) : 3;
+				this.rate = $.isNumeric(parseInt(rate)) ? parseInt(rate) : 1000;
+				this.text = typeof (text) === 'undefined' || text === null ? '{$Think.lang.DISTRIBUTION_IN}' : text;
+				this.style = typeof (style) === 'undefined' || style === null ? '.' : style;
+				this.init();
+
+			}
+
+			loading.prototype = {
+				init: function () {
+					var self = this;
+					var i = 1;
+					function fn() {
+						i++;
+						self.$obj.text(loading.msg(self.text, i, self.style));
+						if (i == self.num) {
+							i = 0;
+						}
+					}
+					self.$obj.text(loading.msg(self.text, 1, self.style));
+					this.handle = setInterval(fn, this.rate);
+					self.$obj.attr('disabled', true);
+					self.$obj.data('loading', this);
+				},
+				/**
+				 * 清除循环任务
+				 * @returns {undefined}
+				 */
+				clear: function () {
+					clearInterval(this.handle);
+					this.$obj.text(this.oldvalue);
+					this.$obj.removeAttr('disabled');
+				}
+			};
+			loading.msg = function (text, time, style) {
+				for (var i = 0; i < time; i++) {
+					text += style.toString();
+				}
+				return text;
+			};
+			loading.isObject = function (obj) {
+				return Object.prototype.toString.call(obj) === '[object Object]';
+			};
+			loading.isString = function (obj) {
+				return Object.prototype.toString.call(obj) === '[object Object]';
+			};
+			var defaultConfig = {
+				text: null,
+				num: null,
+				rate: null,
+				style: null
+			}
+			/**
+			 * loading方法的jquery扩展
+			 * 调用方法
+			 * $('.bgc-green').loading();        //正在提交
+			 * $('.bgc-green').loading('stop');  //停止
+			 * $('.bgc-green').loading({text:'请稍候',num:5,rate: 2000,style:'=='});  //可配置的
+			 * @param {type} options
+			 * @returns {container_L52.$.fn}
+			 */
+			$.fn.loading = $.fn.loading || function (options) {
+						if (loading.isObject(options)) {
+							options = $.extend({}, defaultConfig, options);
+						} else if (options === 'stop') {
+							//停止
+							this.each(function (k, v) {
+								var exists = $(this).data('loading');
+								if (exists && exists instanceof loading) {
+									//如果存在则清除之前的操作
+									exists.clear();
+								}
+							});
+							return this;
+						} else {
+							options = $.extend({}, defaultConfig);
+						}
+						this.each(function (k, v) {
+							new loading($(this), options.text, options.num, options.rate, options.style);
+						});
+						return this;
+					}
+			window.loading = loading;
+		})(jQuery)
+
+	</script>
+</body>
+</html>

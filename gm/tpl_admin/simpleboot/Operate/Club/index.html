@@ -1,0 +1,69 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+    <ul class="nav nav-tabs">
+
+        <li class="active"><a href="{:U('Club/index')}" target="_self">{$Think.lang.CLUB_NEWS}</a></li>
+
+    </ul>
+    <form class="well form-search" method="post" action="">
+        <div class="search_type cc mb10">
+            <div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),$serverid,'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+                        <input type="number" name="uid" style="width: 200px;" value="<?php echo I('uid');?>" placeholder="{$Think.lang.PLAYER_UID}">
+                        <input type="number" name="cid" style="width: 200px;" value="<?php echo I('cid');?>" placeholder="{$Think.lang.CLUB_ID}">
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+            </div>
+        </div>
+    </form>
+    <form class="J_ajaxForm" action="" method="post">
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+                <th width="100">UID</th>
+                <th width="100">{$Think.lang.CLUB_ID}</th>
+                <th width="100">{$Think.lang.GUILD_JOB}</th>
+                <th width="100">{$Think.lang.TOTAL_CONTRIBUTION}</th>
+                <th width="100">{$Think.lang.JOIN_TIME}</th>
+                <th width="100">{$Think.lang.SIGNE_IN_THE_NUMBER}</th>
+                <th width="100">{$Think.lang.SIGNE_IN_TYPE}</th>
+                <th width="100">{$Think.lang.OPERATION}</th>
+            </tr>
+            </thead>
+
+            <foreach name="posts"  item="vo">
+                <?php $state=array("1000"=>L('PRESIDENT'),"100"=>L('VICE_CHAIRMAN'),"1"=>L('MEMBER'))?>
+                <tr>
+                    <td>{$vo.uid}</td>
+                    <td>{$vo.cid}</td>
+                    <td>{$state[$vo['state']]}</td>
+                    <td>{$vo.totalscore}</td>
+                    <td>{$vo.exitts|date='Y-m-d H:i:s',###}</td>
+                    <td>{$vo.cinum}</td>
+                    <td>{$vo.citype}</td>
+                    <td><a href="{:U('Club/edit',array('uid'=>$vo['uid'],'serverid'=>$serverid))}">{$Think.lang.EDIT_OPERATION}</a></td>
+                </tr>
+            </foreach>
+            <tfoot>
+            <tr>
+                <th width="100">UID</th>
+                <th width="100">{$Think.lang.CLUB_ID}</th>
+                <th width="100">{$Think.lang.GUILD_JOB}</th>
+                <th width="100">{$Think.lang.TOTAL_CONTRIBUTION}</th>
+                <th width="100">{$Think.lang.JOIN_TIME}</th>
+                <th width="100">{$Think.lang.SIGNE_IN_THE_NUMBER}</th>
+                <th width="100">{$Think.lang.SIGNE_IN_TYPE}</th>
+                <th width="100">{$Think.lang.OPERATION}</th>
+
+            </tr>
+            </tfoot>
+        </table>
+        <div class="pagination">{$Page}</div>
+
+    </form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

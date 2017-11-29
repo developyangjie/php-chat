@@ -1,0 +1,70 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">{$Think.lang.AUDIT_STATUS_LIST}</a></li>
+		<li><a href="{:U('ServerState/add')}" target="_self">{$Think.lang.ADD_AUDIT_STATUS}</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.TYPE}：
+					    {:form_select(array(0=>L('ANDROID'),1=>L('APPLE')),I('type'),'class="form-control form_check" style="width:100px;" check-type="Text" name="type" id="type"',L('PLEASE_SELECT'))}
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+
+					</span>
+			</div>
+		</div>
+	</form>
+   <form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="5%">{$Think.lang.CLIENT_VERSION_NUMBER}</th>
+				<th width="5%">{$Think.lang.ROLE_STATE}</th>
+				<th width="15%">{$Think.lang.TYPE}</th>
+				<th width="15%">{$Think.lang.DOMAIN_NAME}</th>
+				<th width="15%">{$Think.lang.SPARE_DOMAIN_NAME}</th>
+				<th width="15%">{$Think.lang.SPARE_DOMAIN_NAME_TWO}</th>
+				<th width="15%">{$Think.lang.REMARKS_CONTENT}</th>
+				<th width="7%">{$Think.lang.OPERATION}</th>
+			</tr>
+			</thead>
+            <foreach name="post" item="vo">
+				<tr>
+
+					<td>{$vo.clientver}</td>
+					<td><if condition="$vo.statuscode eq 1"><span>{$Think.lang.AUDIT}</span><elseif condition="$vo.statuscode eq 2"/><span>{$Think.lang.FOREIGN}</span><else/><span>{$Think.lang.STOP_SERVICE}</span></if></td>
+					<td><if condition="$vo.type eq 0"><span>{$Think.lang.ANDROID}</span><elseif condition="$vo.type eq 1"/><span>{$Think.lang.APPLE}</span></if></td>
+					<td>{$vo.serverhttp}</td>
+					<td>{$vo.spareserverhttp}</td>
+					<td>{$vo.spareserverhttp2}</td>
+					<td>{$vo.note}</td>
+					<td><a href="{:U('ServerState/edit',array('clientver'=>$vo['clientver'],'type'=>$vo['type']))}">{$Think.lang.EDIT_OPERATION}</a> |
+						<a href="{:U('ServerState/delete',array('clientver'=>$vo['clientver'],'type'=>$vo['type']))}" class="J_ajax_del">{$Think.lang.DELETE_OPERATION}</a>
+
+					</td>
+
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="5%">{$Think.lang.CLIENT_VERSION_NUMBER}</th>
+				<th width="5%">{$Think.lang.ROLE_STATE}</th>
+				<th width="15%">{$Think.lang.TYPE}</th>
+				<th width="15%">{$Think.lang.DOMAIN_NAME}</th>
+				<th width="15%">{$Think.lang.SPARE_DOMAIN_NAME}</th>
+				<th width="15%">{$Think.lang.SPARE_DOMAIN_NAME_TWO}</th>
+				<th width="15%">{$Think.lang.REMARKS_CONTENT}</th>
+				<th width="7%">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+	   <div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<admintpl file="header"/>
+<style type="text/css">
+.col-auto { overflow: auto; _zoom: 1;_float: left;}
+.col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+.table th, .table td {vertical-align: middle;}
+.picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+	  <li class="active"><a href="#"  target="_self">{$Think.lang.ACTIVE_CONFIGURATION}</a></li>
+	  <li><a href="{:U('ActiveConfiguration/add')}" target="_self">{$Think.lang.ADD_ACTIVE_CONFIGURATION}</a></li>
+	  <li><a href="{:U('ActiveConfiguration/accumulate')}" target="_self">{$Think.lang.ACTIVITY_ACCUMULATION_ALLOCATIO_NTIRED}</a></li>
+	  <li><a href="{:U('ActiveConfiguration/accumulate_list')}"  target="_self">{$Think.lang.LIST_OF_ACTIVITIES}</a></li>
+	  <li><a href="{:U('ActiveConfiguration/tired_list')}"  target="_self">{$Think.lang.TIRED_ACTIVITY_LIST}</a></li>
+	  <li><a href="{:U('ActiveConfiguration/weekaccumulate_list')}"  target="_self">{$Think.lang.WEEK_ACTIVE}</a></li>
+	  <li><a href="{:U('ActiveConfiguration/timedpacks')}"  target="_self">{$Think.lang.TIMED_PACKS}</a></li>
+	  <li><a href="{:U('ActiveConfiguration/timedpacks_list')}"  target="_self">{$Think.lang.TIMED_PACKS_LIST}</a></li>
+  </ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.ACTIVITY_TYPE}：
+					    {:form_select(array("1"=>L('XIULUO_ROAD'),"2"=>L('FIRST_PAY_ACTIVITY'),"6"=>L('CUMULATIVE_CHARGE'),"7"=>L('CUMULATIVE_CONSUMPTION'),"8"=>L('MAKE_AN_APPOINTMENT'),"9"=>L('FOLLOW_FB'),"10"=>L('MAKE_AN_APPOINTMENT_WELFARE'),"11"=>L('DELETE_TEST'),"12"=>L('DOUBLE_EGG_SKIN_EXCHANGE'),"13"=>L('SPECIAL_DRAW'),"14"=>L('PAY_ACTIVITY'),"15"=>L('DROP_DOBULE_ACTIVITY'),"16"=>L('DROP_EGG_ACTIVITY'),"17"=>L('LINK_INTRODUCE_ACTIVITY'),"18"=>L('LINK_SKIN_ACTIVITY'),"19"=>L('OPEN_MAIL_ACTIVITY'),"20"=>L('DH_SHOP_ACTIVITY'),"21"=>L('PVE_COINEXP_UP_ACTIVITY'),"22"=>L('OLDROLE_BACK_ACTIVITY'),"23"=>L('NEWROLE_ENTER_ACTIVITY'),"24"=>L('LIMIT_PACK_ACTIVITY'),"25"=>L('ONE_DRAW'),"27"=>L('RAID_BOSS_ACTIVITY'),"28"=>L('XIULUO_SPECIAL__ACTIVITY'),"29"=>L('LUCKY_DRAW__ACTIVITY'),"30"=>L('TEN_DRAW_ACTIVITY'),"31"=>L('LABOR_DAY_ACTIVITY'),"32"=>L('RANK_REWARD_ACTIVITY'),"33"=>L('GOLDEN_WEEK'),"34"=>L('KINGPVP_WIN_ACTIVITY'),"35"=>L('WEEK_CHONGZHI_ACTIVITY'),"36"=>L('ONE_HOUR_ACTIVITY')),I('said'),'class="form-control form_check" style="width:140px;" check-type="Text" name="said" id="said"',L('PLEASE_SELECT'))}
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+
+					</span>
+			</div>
+		</div>
+	</form>
+	<form class="J_ajaxForm" action="" method="post">
+		<?php
+
+				$state=array("1"=>L('XIULUO_ROAD'),"2"=>L('FIRST_PAY_ACTIVITY'),"6"=>L('CUMULATIVE_CHARGE'),"7"=>L('CUMULATIVE_CONSUMPTION'),"8"=>L('MAKE_AN_APPOINTMENT'),"9"=>L('FOLLOW_FB'),"10"=>L('MAKE_AN_APPOINTMENT_WELFARE'),"11"=>L('DELETE_TEST'),"12"=>L('DOUBLE_EGG_SKIN_EXCHANGE'),"13"=>L('SPECIAL_DRAW'),"14"=>L('PAY_ACTIVITY'),"15"=>L('DROP_DOBULE_ACTIVITY'),"16"=>L('DROP_EGG_ACTIVITY'),"17"=>L('LINK_INTRODUCE_ACTIVITY'),"18"=>L('LINK_SKIN_ACTIVITY'),"19"=>L('OPEN_MAIL_ACTIVITY'),"20"=>L('DH_SHOP_ACTIVITY'),"21"=>L('PVE_COINEXP_UP_ACTIVITY'),"22"=>L('OLDROLE_BACK_ACTIVITY'),"23"=>L('NEWROLE_ENTER_ACTIVITY'),"24"=>L('LIMIT_PACK_ACTIVITY'),"25"=>L('ONE_DRAW'),"27"=>L('RAID_BOSS_ACTIVITY'),"28"=>L('XIULUO_SPECIAL__ACTIVITY'),"29"=>L('LUCKY_DRAW__ACTIVITY'),"30"=>L('TEN_DRAW_ACTIVITY'),"31"=>L('LABOR_DAY_ACTIVITY'),"32"=>L('RANK_REWARD_ACTIVITY'),"33"=>L('GOLDEN_WEEK'),"34"=>L('KINGPVP_WIN_ACTIVITY'),"35"=>L('WEEK_CHONGZHI_ACTIVITY'),"36"=>L('ONE_HOUR_ACTIVITY'));
+
+		?>
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="5%">{$Think.lang.ACTIVITY_NAME}</th>
+				<th width="5%">{$Think.lang.SERVER_ID}</th>
+				<th width="15%">{$Think.lang.START_TIME}</th>
+				<th width="15%">{$Think.lang.END_TIME}</th>
+				<th width="7%">{$Think.lang.OPERATION}</th>
+			</tr>
+			</thead>
+			<foreach name="posts" item="vo">
+				<tr>
+
+					<td>{$state[$vo['said']]}</td>
+					<td>{$vo.serverid}</td>
+					<td>{$vo.startts}</td>
+					<td>{$vo.endts}</td>
+					<td><a href="{:U('ActiveConfiguration/edit',array('said'=>$vo['said'],'serverid'=>$vo['serverid']))}">{$Think.lang.EDIT_OPERATION}</a></td>
+
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="5%">{$Think.lang.ACTIVITY_NAME}</th>
+				<th width="5%">{$Think.lang.SERVER_ID}</th>
+				<th width="15%">{$Think.lang.START_TIME}</th>
+				<th width="15%">{$Think.lang.END_TIME}</th>
+				<th width="7%">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+		<div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>
+

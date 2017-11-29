@@ -1,0 +1,36 @@
+<admintpl file="header"/>
+</head>
+<body>
+<div class="wrap">
+  <div id="error_tips">
+    <h2>{$Think.lang.APPLICATION}{$app}{$Think.lang.MENU_IMPORT_SUCCESS}</h2>
+    <div class="error_cont">
+      <ul>
+      	<if condition="!empty($newmenus)" >
+	      	<foreach name="newmenus" item="vo">
+	      		<li>{$vo}</li>
+	      	</foreach>
+      	<else/>
+      		<li>{$Think.lang.APPLICATION}{$app}{$Think.lang.NO_NEW_MENU_IMPORT}</li>
+      	</if>
+      </ul>
+      	<if condition="!empty($nextapp)" >
+	      	<script>
+	      		setTimeout(function(){
+	      			location.href ="{:u('admin/menu/spmy_getactions',array('app'=>$nextapp))}";
+	      		},1000);
+	      	</script>
+	      	<div class="error_return">
+	      		<a href="{:u('admin/menu/spmy_getactions',array('app'=>$nextapp))}" class="btn btn-primary">{$Think.lang.NEXT_APPLICATION}</a>
+	      		<a href="{:u('admin/menu/lists')}" class="btn" style="margin-left:10px;">{$Think.lang.RETURN}</a>
+	      	</div>
+      	<else/>
+      		<div>{$Think.lang.FULL_IMPORT_SUCCESS}</div>
+      		<div class="error_return"><a href="{:u('menu/lists')}" class="btn">{$Think.lang.RETURN}</a></div>
+      	</if>
+    </div>
+  </div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

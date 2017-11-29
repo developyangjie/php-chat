@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>jQuery.pager 在线演示地址2</title>
+<style>
+/* stypeType:0 默认*/
+.pagination{margin:5px 5px 0 0;display:block;overflow:hidden;clear:both;}
+.pagination select{float:left;}
+.pagination a{ height:18px; line-height:18px; float:left; padding:0px 5px; border: solid 1px #D6D6D6; margin-right: 8px;TEXT-DECORATION:none}
+.pagination span{ height:18px; line-height:18px; float:left; padding:0px 5px; margin-right:5px; min-width:1em; text-align:center; }
+.pagination .current{ background: #26B; color: #fff; border: solid 1px #D6D6D6; }
+.pagination span.current.next{ color:#999; border-color:#999; background:#fff;}
+.pagination span.current.prev{ color:#999; border-color:#999; background:#fff;}
+.pagination a.next{ border:1px solid #999; background:#fff; margin-right:5px; padding:0 5px;}
+
+
+/* stypeType:1 */
+DIV.czyx_pager {
+	padding:3px;
+	margin:3xp;
+	font-size:0.85em;
+	FONT-FAMILY: Tahoma,Helvetica,sans-serif;
+	TEXT-ALIGN: center
+}
+DIV.czyx_pager A {
+	BORDER: #ccdbe4 1px solid; 
+	PADDING: 2px 8px; 
+	COLOR: #0061de; 
+	MARGIN-RIGHT: 3px; 
+	TEXT-DECORATION: none;
+	BACKGROUND-POSITION: 50% bottom; 
+}
+DIV.czyx_pager A:hover {
+	BORDER: #2b55af 1px solid; 
+	COLOR: #fff; 
+	BACKGROUND-IMAGE: none; 
+	BACKGROUND-COLOR: #3666d4
+}
+DIV.czyx_pager A:active {
+	BORDER: #2b55af 1px solid; 
+	BACKGROUND-IMAGE: none; 
+	COLOR: #fff; 
+	BACKGROUND-COLOR: #3666d4
+}
+DIV.czyx_pager SPAN.current {
+	PADDING: 2px 6px; 
+	FONT-WEIGHT: bold; 
+	COLOR: #000; 
+	MARGIN-RIGHT: 3px;	
+}
+DIV.czyx_pager SPAN.disabled {DISPLAY: none}
+DIV.czyx_pager A.next {
+	BORDER: #ccdbe4 2px solid; 
+	MARGIN: 0px 0px 0px 10px; 
+}
+DIV.czyx_pager A.next:hover {
+	BORDER: #2b55af 2px solid
+}
+DIV.czyx_pager A.prev {
+	BORDER: #ccdbe4 2px solid; 
+	MARGIN: 0px 10px 0px 0px; 
+}
+DIV.czyx_pager A.prev:hover {
+	BORDER: #2b55af 2px solid; 
+}
+</style>
+
+<!--引入JS文件-->
+<script src="jq.js"></script>
+<script src="pager.min.js"></script>
+</head>
+
+<body>
+	<H1><a href="http://www.goodxyx.com/jquery/plugins/pager_demo2.html">jQuery.pager 在线演示地址2</a></H1>
+	<h2 class="title" id="test1"> 演示ajax分页，以及appendTo方法加载分页条</h2>
+	<div id="ajaxContainer"></div>
+	<div id="page1" class="pagination"></div>
+	<script>
+	var Pager = $.pager({
+		count:198,
+		ajax:{
+			url:'pager.php?a=x',
+			cache:false,
+			
+			/*
+			* 说明：该方法是在ajax发生前触发的
+			*       this.page 是指分页条发生变化前的页码
+			*       goPage 表示将要到达的页码
+			* 注意：使用return false 时，配合 this.page改变和 this.reload()方法
+			*       否则页码永远不会变化
+			*/
+			start:function(goPage){
+				if(this.page==3){
+					var str = '发生变化前，我是在第' + this.page + '页\n';
+					str += '默认情况下，我将要到达第' + goPage + '页\n';
+					str += '不过我阻止了，直接进入第5页\n';
+					this.page = 5;
+					alert(str);
+					
+					//return false 表示只要是第3页，不改变分页条和后面的加载
+					//调用reload()后，会重新加载分页条，和触发ajax
+					//由于前面已经设置 page=5，因此会跳转到第5页
+					this.reload();
+					return false ; 
+				}
+			},
+			data:{text:'param-text'}  //向后台传递的参数
+		},
+		ajaxContainer:'#ajaxContainer'
+	});
+	
+	//使用appendTo方法加载
+	Pager.appendTo('#page1').reload();
+	</script>
+	
+	
+	<hr />
+	<h2 id="test2" class="title">ajax通用写法</h2>
+	<div id="page2" class="pagination"></div>
+	<script>
+	$.pager({
+		count:119,
+		ajax:{url:'pager.php?a=y'},
+		pageContainer:'#page2',
+		ajaxContainer:'#test2'
+	});
+	</script>
+	
+	
+	
+	
+	<hr />
+	<h2 id="test3" class="title">演示onchange方法，单纯的一个JS分页</h2>
+	<div id="page3" class="pagination"></div>
+	<script>
+	var Pager3 = $.pager({
+		count:31900,
+		pageContainer:'#page3',
+		onchange:function(){
+			var t = [
+				'当前页码：page=' , this.page , "\n" ,
+				'每页条数：nums=' , this.nums , "\n" ,
+				'总条数：count=' , this.count , "\n" ,
+				'总页码数：pages=' , this.pages , "\n" ,
+			];
+			alert(t.join(''));
+			if(this.page == 5){
+				/*可以中途改变*/
+				this.page = 3 ;
+				this.reload();
+			}else if(this.page == 4){
+				this.page = 6 ;
+				this.reload();
+			}
+		}
+	});
+	</script>	
+		
+		
+	<hr />
+	<h2 id="test4" class="title">联动分页实例</h2>
+	<div class="page4 pagination" id="page4_1"></div>
+	<div class="page4 pagination" id="page4_2"></div>
+	<script>
+	var Pager4 = new $.pager({
+		count:1001,
+		pageContainer:'#page4_1,#page4_2' //也可以换为：'.page4'
+	});
+	</script>	
+	
+	
+	
+	
+	<hr />
+	<h2 id="test5" class="title">分页样式二</h2>
+	<div id="page5" class="czyx_pager"></div>
+	<script>
+	$.pager({
+		count:1001,
+		styleType:1, //选择样式，目前只有0（默认） 1两个样式
+		pageContainer:'#page5'
+	});
+	</script>	
+<HR />
+<div>
+	<a href="http://www.goodxyx.com/jquery/plugins/pager.html">功能及参数说明</a> 
+	<a href="http://www.goodxyx.com/jquery/plugins/pager_res.html">源码地址</a> 
+	<a href="http://www.goodxyx.com/jquery/plugins/pager_demo.html">演示地址一</a> 
+	<a href="http://www.goodxyx.com/jquery/plugins/pager_down.html">DEMO下载地址</a> 
+</div>
+
+<script>
+for(var i=1; i<6; ++i){
+	var jTitle = $('#test' + i);
+	var sScript = jTitle.next().next();
+	if(i == 1){
+		sScript = sScript.next();
+	}
+	sScript = sScript.html();
+	sScript = sScript.split(' ').join("&nbsp;")
+	.split("\t").join("&nbsp;&nbsp;&nbsp;&nbsp;")
+	.split("\n").join("<BR />");
+	//alert(sScript);
+	jTitle.after('<DIV class="demo">' + sScript + '</DIV>');
+}	
+</script>
+
+</body>
+</html>

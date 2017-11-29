@@ -1,0 +1,89 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('RegularMail/send_email')}"  target="_self">{$Think.lang.EMAIL_SEND}</a></li>
+			<li class="active"><a href="javascript:;">{$Think.lang.EMAIL_SEND_LIST}</a></li>
+			<!--li><a href="{:U('AdminGameItems/add',array('gid'=>$gid))}" target="_self">添加游戏道具</a></li-->
+		</ul>
+		<form class="J_ajaxForm" action="" method="post">
+
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+				<tr>
+
+					<th width="50">{$Think.lang.ASSIGNMENT_NAME}</th>
+					<th width="50">{$Think.lang.TASK_TIME}</th>
+					<th width="100">{$Think.lang.SERVER_ID}</th>
+					<th width="100">{$Think.lang.EMAIL_TYPE}</th>
+					<th width="150">{$Think.lang.MAIL_TITLE}</th>
+					<th width="150">{$Think.lang.CONTENT_DESCRIPTION}</th>
+					<th width="50">{$Think.lang.SEND_UID_TASK}</th>
+					<th width="50">{$Think.lang.GOLD}</th>
+					<th width="50">{$Think.lang.DIAMONDS}</th>
+					<th width="50">{$Think.lang.PROP_ONE}</th>
+					<th width="50">{$Think.lang.COUNT_ONE}</th>
+					<th width="50">{$Think.lang.PROP_TWO}</th>
+					<th width="50">{$Think.lang.COUNT_TWO}</th>
+					<th width="100">{$Think.lang.BRAVE}</th>
+					<th width="100">{$Think.lang.EQUIPMENT}</th>
+					<th width="5%">{$Think.lang.OPERATION}</th>
+
+				</tr>
+				</thead>
+				<?php $state=array("0"=>L('ORDINARY'),"1"=>L('REWARD'))?>
+				<foreach name="posts" item="vo">
+					<tr>
+
+						<td>{$vo.taskName}</td>
+						<td>{$vo.taskCron}</td>
+						<td>{$vo.emailServerNames}</td>
+						<td>{$state[$vo['emailType']]}</td>
+						<td>{$vo.emailTitle}</td>
+						<td>{$vo.emailContent}</td>
+						<td>{$vo.emailUid}</td>
+						<td>{$vo.emailGameDiamond}</td>
+						<td>{$vo.emailGameCoin}</td>
+						<td>{$vo.emailGameItemID}</td>
+						<td>{$vo.emailGameItemCount}</td>
+						<td>{$vo.emailGameItemID1}</td>
+						<td>{$vo.emailGameItemCount1}</td>
+						<td>{$vo.emailGamePartners}</td>
+						<td>{$vo.emailGameEquips}</td>
+						<td><a class="J_ajax_del" href="{:U('RegularMail/delete',array('key'=>$vo['taskName']))}">{$Think.lang.DELETE_OPERATION}</a></td>
+
+					</tr>
+				</foreach>
+				<tfoot>
+				<tr>
+
+					<th width="50">{$Think.lang.ASSIGNMENT_NAME}</th>
+					<th width="50">{$Think.lang.TASK_TIME}</th>
+					<th width="100">{$Think.lang.SERVER_ID}</th>
+					<th width="100">{$Think.lang.EMAIL_TYPE}</th>
+					<th width="150">{$Think.lang.MAIL_TITLE}</th>
+					<th width="150">{$Think.lang.CONTENT_DESCRIPTION}</th>
+					<th width="50">{$Think.lang.SEND_UID_TASK}</th>
+					<th width="50">{$Think.lang.GOLD}</th>
+					<th width="50">{$Think.lang.DIAMONDS}</th>
+					<th width="50">{$Think.lang.PROP_ONE}</th>
+					<th width="50">{$Think.lang.COUNT_ONE}</th>
+					<th width="50">{$Think.lang.PROP_TWO}</th>
+					<th width="50">{$Think.lang.COUNT_TWO}</th>
+					<th width="100">{$Think.lang.BRAVE}</th>
+					<th width="100">{$Think.lang.EQUIPMENT}</th>
+					<th width="5%">{$Think.lang.OPERATION}</th>
+
+				</tr>
+				</tfoot>
+			</table>
+
+			<div class="pagination">{$Page}</div>
+		</form>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+	
+	
+
+</body>
+</html>

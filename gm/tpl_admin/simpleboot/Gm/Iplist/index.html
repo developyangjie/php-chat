@@ -1,0 +1,62 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">{$Think.lang.ADDRESS_LIST}</a></li>
+		<li><a href="{:U('Iplist/add')}" target="_self">{$Think.lang.ADD_ADDRESS_LIST}</a></li>
+	</ul>
+	<form class="well form-search" method="post" action="{:U('Iplist/index')}">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+					    {$Think.lang.TYPE}:
+						{:form_select(array(1=>L('WHITE_LIST'),2=>L('BLACK_LIST')),I('type'),'class="form-control form_check" style="width:100px;" check-type="Text" name="type" id="type"')}
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+			</div>
+		</div>
+	</form>
+   <form action="{:U('Iplist/delete')}" method="post">
+	   <div class="table-actions">
+		   <button class="btn btn-primary btn-small" type="submit" >{$Think.lang.DELETE_OPERATION}</button>
+	   </div>
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="15"><label><input type="checkbox" class="J_check_all" data-direction="x" data-checklist="J_check_x"></label></th>
+				<th width="100">{$Think.lang.SERVER_ID}</th>
+				<th width="100">{$Think.lang.ADDRESS_LIST}</th>
+				<th width="100">{$Think.lang.OPERATION}</th>
+			</tr>
+			</thead>
+			
+            <foreach name="posts"  item="vo">
+				<input type="hidden" name="server_id" value="{$vo.server_id}">
+				<input type="hidden" name="type" value="{$type}">
+				<tr>
+					<td><input type="checkbox" class="J_check" data-yid="J_check_y" data-xid="J_check_x" name="ips[]" value="{$vo.ip}" title="ID:{$vo.ip}"></td>
+					<td>{$vo.server_id}</td>
+					<td>{$vo.ip}</td>
+					<td><a href="{:U('Iplist/delete',array('ips[]'=>$vo['ip'],'server_id'=>$vo['server_id'],'type'=>$type))}">{$Think.lang.DELETE_OPERATION}</a></td>
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="15"><label><input type="checkbox" class="J_check_all" data-direction="x" data-checklist="J_check_x"></label></th>
+				<th width="100">{$Think.lang.SERVER_ID}</th>
+				<th width="100">{$Think.lang.ADDRESS_LIST}</th>
+				<th width="100">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+	   <div class="table-actions">
+		   <button class="btn btn-primary" type="submit">{$Think.lang.DELETE_OPERATION}</button>
+	   </div>
+	   <div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

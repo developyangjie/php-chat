@@ -1,0 +1,287 @@
+<admintpl file="header"/>
+<style type="text/css">
+	.col-auto { overflow: auto; _zoom: 1;_float: left;}
+	.col-right { float: right; width: 210px; overflow: hidden; margin-left: 6px; }
+	.table th, .table td {vertical-align: middle;}
+	.picList li{margin-bottom: 5px;}
+</style>
+</head>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li><a href="{:U('ActiveConfiguration/index')}" target="_self">{$Think.lang.ACTIVE_CONFIGURATION}</a></li>
+		<li class="active"><a href="#"  target="_self">{$Think.lang.ADD_ACTIVE_CONFIGURATION}</a></li>
+		<li><a href="{:U('ActiveConfiguration/accumulate')}" target="_self">{$Think.lang.ACTIVITY_ACCUMULATION_ALLOCATIO_NTIRED}</a></li>
+		<li><a href="{:U('ActiveConfiguration/accumulate_list')}"  target="_self">{$Think.lang.LIST_OF_ACTIVITIES}</a></li>
+		<li><a href="{:U('ActiveConfiguration/tired_list')}"  target="_self">{$Think.lang.TIRED_ACTIVITY_LIST}</a></li>
+		<li><a href="{:U('ActiveConfiguration/weekaccumulate_list')}"  target="_self">{$Think.lang.WEEK_ACTIVE}</a></li>
+		<li><a href="{:U('ActiveConfiguration/timedpacks')}"  target="_self">{$Think.lang.TIMED_PACKS}</a></li>
+		<li><a href="{:U('ActiveConfiguration/timedpacks_list')}"  target="_self">{$Think.lang.TIMED_PACKS_LIST}</a></li>
+	</ul>
+	<form name="myform" id="myform" action="" method="post" class="form-horizontal J_ajaxForms" enctype="multipart/form-data">
+
+		<div class="col-auto">
+			<div class="table_full">
+				<table class="table table-bordered">
+					<tr>
+						<th width="80">{$Think.lang.CHOICE_SERVER}</th>
+						<td>{:form_select(gm_server(),I('server_id'),'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}</td>
+					</tr>
+						<?php $actives=array("1"=>L('XIULUO_ROAD'),"2"=>L('FIRST_PAY_ACTIVITY'),"6"=>L('CUMULATIVE_CHARGE'),"7"=>L('CUMULATIVE_CONSUMPTION'),"8"=>L('MAKE_AN_APPOINTMENT'),"9"=>L('FOLLOW_FB'),"10"=>L('MAKE_AN_APPOINTMENT_WELFARE'),"11"=>L('DELETE_TEST'),"12"=>L('DOUBLE_EGG_SKIN_EXCHANGE'),"13"=>L('SPECIAL_DRAW'),"14"=>L('PAY_ACTIVITY'),"15"=>L('DROP_DOBULE_ACTIVITY'),"16"=>L('DROP_EGG_ACTIVITY'),"17"=>L('LINK_INTRODUCE_ACTIVITY'),"18"=>L('LINK_SKIN_ACTIVITY'),"19"=>L('OPEN_MAIL_ACTIVITY'),"20"=>L('DH_SHOP_ACTIVITY'),"21"=>L('PVE_COINEXP_UP_ACTIVITY'),"22"=>L('OLDROLE_BACK_ACTIVITY'),"23"=>L('NEWROLE_ENTER_ACTIVITY'),"24"=>L('LIMIT_PACK_ACTIVITY'),"25"=>L('ONE_DRAW'),"27"=>L('RAID_BOSS_ACTIVITY'),"28"=>L('XIULUO_SPECIAL__ACTIVITY'),"29"=>L('LUCKY_DRAW__ACTIVITY'),"30"=>L('TEN_DRAW_ACTIVITY'),"31"=>L('LABOR_DAY_ACTIVITY'),"32"=>L('RANK_REWARD_ACTIVITY'),"33"=>L('GOLDEN_WEEK'),"34"=>L('KINGPVP_WIN_ACTIVITY'),"35"=>L('WEEK_CHONGZHI_ACTIVITY'),"36"=>L('ONE_HOUR_ACTIVITY'));?>
+					<tr>
+						<th width="80">{$Think.lang.SELECTION_ACTIVITY}</th>
+						<td>
+							<select class="form-control" id="said" name="said">
+								<?php foreach ($actives as $k => $v): ?>
+								<option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th width="80">{$Think.lang.START_TIME}</th>
+						<td> <input type="text" class="J_datetime" style="width:200px" name="startts" id="startts"  value="<?php echo !empty($posts['startts'])?$posts['startts']:date('Y-m-d H:i');?>" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" /></td>
+					</tr>
+					<tr>
+						<th width="80">{$Think.lang.END_TIME}</th>
+						<td> <input type="text" class="J_datetime" style="width:200px" name="endts" id="endts"  value="<?php echo !empty($posts['endts'])?$posts['endts']:date('Y-m-d H:i');?>" placeholder="{$Think.lang.DEFAULT_FOR_THE_CURRENT_TIME}" /></td>
+					</tr>
+					<?php $accumulate=array("1"=>L('SINGLE_DAY_ACCUMULATION'),"2"=>L('MULTI_DAY_ACCUMULATION'));?>
+					<tr id="Tired_and_tired">
+						<th width="80">{$Think.lang.ACCUMULATION_TYPE}</th>
+						<td>
+							<select class="form-control" id="tired_type"  name="actvalue1">
+								<?php foreach ($accumulate as $k => $v): ?>
+								<option value="<?php echo $k; ?>" selected="2"><?php echo $v; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr id="xiuluo">
+						<?php $exchange=array("1"=>L('XIULUO_COIN'),"2"=>L('BRAVE_EXCHANGE'),"3"=>L('ORDINARY_MAGATAMA'));?>
+						<th width="80">{$Think.lang.EXCHANGE_TYPE}</th>
+						<td>
+							<select class="form-control" id="actvalue1" name="actvalue1">
+								<?php foreach ($exchange as $k => $v): ?>
+								<option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr id="onehour">
+						<?php $exchange=array("1"=>L('PVE_SPECIES'),"2"=>L('PVE_EXP'),"3"=>L('DROP_DOUBLE'),"4"=>L('KING_COMPETITIVE'));?>
+						<th width="80">{$Think.lang.ACTIVE_TYPE}</th>
+						<td>
+							<select class="form-control" id="pve_onehour" name="actvalue1">
+								<?php foreach ($exchange as $k => $v): ?>
+								<option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+<!--					<tr id="partner">
+						<th width="80">{$Think.lang.BRAVE}</th>
+						<td>
+							<select id = "itemtype">
+								<option value = "16">{$Think.lang.BRAVE}</option>
+							</select>
+							<select class="form-control" id="itemlist" name="actvalue1">
+								<?php foreach ($item_info as $k => $v): ?>
+								<option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>-->
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-primary btn_submit J_ajax_submit_btn" type="submit" id="subt">{$Think.lang.SUBMIT}</button>
+			<a class="btn" href="javascript:history.go(-1)">{$Think.lang.RETURN}</a>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+<script>
+	/////---------------------
+	Wind.use('validate', 'ajaxForm', 'artDialog', function () {
+		var form = $('form.J_ajaxForms');
+		//ie处理placeholder提交问题
+		if ($.browser.msie) {
+			form.find('[placeholder]').each(function () {
+				var input = $(this);
+				if (input.val() == input.attr('placeholder')) {
+					input.val('');
+				}
+			});
+		}
+		//表单验证开始
+		form.validate({
+			//是否在获取焦点时验证
+			onfocusout:false,
+			//是否在敲击键盘时验证
+			onkeyup:false,
+			//当鼠标掉级时验证
+			onclick: false,
+			//验证错误
+			showErrors: function (errorMap, errorArr) {
+				//errorMap {'name':'错误信息'}
+				//errorArr [{'message':'错误信息',element:({})}]
+				try{
+					$(errorArr[0].element).focus();
+					art.dialog({
+						id:'error',
+						icon: 'error',
+						lock: true,
+						fixed: true,
+						background:"#CCCCCC",
+						opacity:0,
+						content: errorArr[0].message,
+						cancelVal: '确定',
+						cancel: function(){
+							$(errorArr[0].element).focus();
+						}
+					});
+				}catch(err){
+				}
+			},
+			highlight: false,
+			//是否在获取焦点时验证
+			onfocusout: false,
+			//验证通过，提交表单
+			submitHandler: function (forms) {
+				$(forms).ajaxSubmit({
+					url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+					dataType: 'json',
+					beforeSubmit: function (arr, $form, options) {
+
+					},
+					success: function (data, statusText, xhr, $form) {
+						if(data.status){
+							setCookie("refersh_time",1);
+							//添加成功
+							Wind.use("artDialog", function () {
+								art.dialog({
+									id: "succeed",
+									icon: "succeed",
+									fixed: true,
+									lock: true,
+									background: "#CCCCCC",
+									opacity: 0,
+									content: data.info,
+									button:[
+										{
+											name: '{$Think.lang.CONTINUE_TO_ADD}',
+											callback:function(){
+												reloadPage(window);
+												return true;
+											},
+											focus: true
+										}
+									]
+								});
+							});
+						}else{
+							isalert(data.info);
+						}
+					}
+				});
+			}
+		});
+	});
+	function getItemList(){
+		$.get("{:U('Operate/Email/get_item_json')}&itemType=" + $("#itemtype").val(),function(data){
+			var str = '';
+			if(data.Options){
+				for(var i = 0; i < data.Options.length; i++){
+					str += '<option value="'+data.Options[i].Value+'">(' + data.Options[i].Value + ')' + data.Options[i].DisplayText + '</option>';
+				}
+				$('#itemlist').html(str);
+
+			}
+		});
+	}
+	$(function () {
+		getItemList();
+		$("#itemtype").change(function(){
+			$('#itemlist').html('');
+			getItemList();
+		});
+		function showitem(){
+			var val = $("#said").val();
+			if (val == 2) {
+				$("#partner").show();
+				$("#itemlist").attr("disabled", false);
+			} else {
+				$("#partner").hide();
+				$("#itemlist").attr("disabled", true);
+			}
+		}
+
+		showitem();
+		$("#said").change(function () {
+			showitem();
+		});
+
+	});
+	function clearData(){
+		var serverid = $("#server_id").val();
+		if(confirm("{$Think.lang.CONFIRM_EMPTY}")){
+			$.post('{:U('ActiveConfiguration/clears')}&serverid='+serverid,function(data){
+				if(data > 0){
+					alert('{$Think.lang.SUCCESSFUL_OPERATION}');
+				}else{
+					alert('{$Think.lang.OPERATION_FAILED}');
+				}
+			});
+		}
+	}
+	function showitem(){
+		var val = $("#said").val();
+		if (val == 1) {
+			$("#xiuluo").show();
+			$("#clear").show();
+			$("#actvalue1").attr("disabled", false);
+		} else {
+			$("#xiuluo").hide();
+			$("#clear").hide();
+			$("#actvalue1").attr("disabled", true);
+		}
+		if (val == 6 || val == 7) {
+			$("#Tired_and_tired").show();
+			$("#tired_type").attr("disabled", false);
+		} else {
+			$("#Tired_and_tired").hide();
+			$("#tired_type").attr("disabled", true);
+		}
+		if (val == 36) {
+			$("#onehour").show();
+			$("#pve_onehour").attr("disabled", false);
+		} else {
+			$("#onehour").hide();
+			$("#pve_onehour").attr("disabled", true);
+		}
+	}
+	$(function () {
+		showitem();
+		$("#said").change(function () {
+			showitem();
+		});
+	});
+	$('#subt').click(function () {
+		var val = $("#said").val();
+		var content = "{$Think.lang.CHECK_WHETHER_TO_ADD}";
+		if (val == 28) {
+			if (confirm(content)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	});
+</script>
+</body>
+</html>
+

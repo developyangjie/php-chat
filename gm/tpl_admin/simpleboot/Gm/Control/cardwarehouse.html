@@ -1,0 +1,78 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+	<ul class="nav nav-tabs">
+		<li><a href="{:U('Control/index')}">{$Think.lang.CARD_DARK_CONTROL}</a></li>
+		<li><a href="{:U('Control/specialsummon')}" target="_self">{$Think.lang.SPECIAL_SUMMON}</a></li>
+		<li><a href="{:U('Control/oftenopen')}" target="_self">{$Think.lang.NORMALLY_OPEN}</a></li>
+		<li class="active"><a href="javascript:;">{$Think.lang.CARD_WAREHOUSE}</a></li>
+
+	</ul>
+	<form class="well form-search" method="post" action="">
+		<div class="search_type cc mb10">
+			<div class="mb10">
+					<span class="mr20">{$Think.lang.CHOICE_SERVER}：
+						{:form_select(gm_server(),$serverid,'class="form-control form_check" check-type="Text" name="server_id" id="server_id"')}
+						<input type="submit" class="btn btn-primary" value="{$Think.lang.SEARCH}" />
+					</span>
+				<button class="btn btn-primary"><a href="{:U('Control/sysgt_add',array('serverid'=>$serverid))}" style="color:#fff;">{$Think.lang.ADD}</a></button>
+			</div>
+		</div>
+	</form>
+   <form class="J_ajaxForm" action="" method="post">
+
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="100">{$Think.lang.HOUSE_ID}</th>
+				<th width="100">{$Think.lang.REPLACEMENT_HOST_CARD}</th>
+				<th width="100">{$Think.lang.TIME}</th>
+				<th width="100">{$Think.lang.OUTPUT_QUANTITY}</th>
+				<th width="100">{$Think.lang.TOTAL_OUTPUT_CARD_NUMBER}</th>
+				<th width="100">{$Think.lang.SWITCH}</th>
+				<th width="100">{$Think.lang.OPERATION}</th>
+			</tr>
+			</thead>
+			
+            <foreach name="posts"  item="vo">
+				<tr>
+					<td>{$vo.pid}</td>
+					<td>{$vo.replace}</td>
+					<td>{$vo.time}</td>
+					<td>{$vo.num}<a href="{:U('Control/update_sysgt',array('pid'=>$vo['pid'],'serverid'=>$serverid))}" style="margin-left:10px;"><span class="delect_blog_sort">{$Think.lang.RESET}</span></a></td>
+					<td>{$vo.totalnum}</td>
+					<td><if condition = '$vo.switch eq 0'>（<span style="color:red;">{$Think.lang.ALREADY_CLOSED}</span>）</if>
+						<if condition = '$vo.switch eq 1'>（<span style="color:green;">{$Think.lang.ALREADY_OPEN}</span>）</if>
+					</td>
+					<td><a href="{:U('Control/sysgt_edit',array('pid'=>$vo['pid'],'serverid'=>$serverid))}">{$Think.lang.EDIT_OPERATION}</a> |
+						<a href="{:U('Control/sysgt_delete',array('pid'=>$vo['pid'],'serverid'=>$serverid))}" class="J_ajax_del">{$Think.lang.DELETE_OPERATION}</a>
+					</td>
+				</tr>
+			</foreach>
+			<tfoot>
+			<tr>
+				<th width="100">{$Think.lang.HOUSE_ID}</th>
+				<th width="100">{$Think.lang.REPLACEMENT_HOST_CARD}</th>
+				<th width="100">{$Think.lang.TIME}</th>
+				<th width="100">{$Think.lang.OUTPUT_QUANTITY}</th>
+				<th width="100">{$Think.lang.TOTAL_OUTPUT_CARD_NUMBER}</th>
+				<th width="100">{$Think.lang.SWITCH}</th>
+				<th width="100">{$Think.lang.OPERATION}</th>
+			</tr>
+			</tfoot>
+		</table>
+	   <div class="pagination">{$Page}</div>
+
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>
+<script>
+	$(function(){
+		$(".delect_blog_sort").click(function(){
+			return confirm("{$Think.lang.CONFIRM_RESET}");
+		});
+	});
+
+</script>
